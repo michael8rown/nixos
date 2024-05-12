@@ -1,8 +1,8 @@
-# My NixOS configurations
+# NixOS configurations
 
-This is where I will keep my configs.
+Configurations and miscellaneous files for my home server and my laptops.
 
-### Preliminary instructions
+### Installation instructions
 
 ```
 sudo su
@@ -24,6 +24,8 @@ nix-channel --update
 nixos-install
 ```
 
+### Variables
+
 The following variables need to be changed:
 
 - VAR_USERNAME: This is whatever your actual username is
@@ -34,3 +36,6 @@ The following variables need to be changed:
 - VAR_HTTP_ROOT: This is the root directory of your webserver, such as `/var/www` or `/srv/httpd`
 - VAR_HOSTNAME: This is the name of your machine
 
+### T0-DO
+
+- [ ] Write a script to change the variables
