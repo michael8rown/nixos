@@ -444,17 +444,17 @@ in
     #  };
     #};
 
-    #"nixosStatus" = {
-    #  enable = false;
-    #  wantedBy = [ "timers.target" ];
-    #  timerConfig = {
-    #    OnCalendar = [
-    #      "Mon..Fri 16,18,22:15:00"
-    #      "Sat,Sun 05,16,22:15:00"
-    #    ];
-    #    Unit = "nixosStatus.service";
-    #  };
-    #};
+    "nixosStatus" = {
+      enable = false;
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = [
+          "Mon..Fri 16,18,22:15:00"
+          "Sat,Sun 05,16,22:15:00"
+        ];
+        Unit = "nixosStatus.service";
+      };
+    };
 
     #"goToSleep" = {
     #  enable = false;
@@ -487,14 +487,14 @@ in
     #  };
     #};
 
-    #"nixosStatus" = {
-    #  description = "Status update for NixOS";
-    #  serviceConfig = {
-    #    Type = "oneshot";
-    #    User = "YOURUSERNAME";
-    #    ExecStart = "/home/YOURUSERNAME/motd-2.0.sh";
-    #  };
-    #};
+    "nixosStatus" = {
+      description = "Status update for NixOS";
+      serviceConfig = {
+        Type = "oneshot";
+        User = "YOURUSERNAME";
+        ExecStart = "/home/YOURUSERNAME/motd-2.0.sh";
+      };
+    };
 
     #"goToSleep" = {
     #  description = "Put the system to sleep";
