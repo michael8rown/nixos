@@ -31,12 +31,12 @@
 
 #  iphone stuff doesn't work
 #  iphone.enable = true;
-#  iphone.user = "YOURUSERNAME";
+#  iphone.user = "VAR_USERNAME";
 
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.YOURUSERNAME = import ./home.nix;
+    users.VAR_USERNAME = import ./home.nix;
   };
 
   # Use the systemd-boot EFI boot loader.
@@ -82,7 +82,7 @@
     '';
   };
 
-  networking.hostName = "nixos-laptop"; # Define your hostname.
+  networking.hostName = "VAR_HOSTNAME"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   # networking.interfaces.enp4s0.ipv4.addresses = [ { address = "10.11.12.122"; prefixLength = 24; } ];
   # networking.defaultGateway = "10.11.12.1";
@@ -162,9 +162,9 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.YOURUSERNAME = {
+  users.users.VAR_USERNAME = {
     isNormalUser = true;
-    description = "YOURUSERNAME";
+    description = "VAR_USERNAME";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
@@ -280,7 +280,7 @@
     # SSHD
     openssh = {
       enable = true;
-      ports = [ PORT ];
+      ports = [ VAR_SSH_PORT ];
     };
 
   };
@@ -298,8 +298,8 @@
 
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 8080 8081 23970 ];
-  networking.firewall.allowedUDPPorts = [ 80 8080 8081 23970 ];
+  networking.firewall.allowedTCPPorts = [ 80 8080 8081 VAR_SSH_PORT ];
+  networking.firewall.allowedUDPPorts = [ 80 8080 8081 VAR_SSH_PORT ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 

@@ -24,13 +24,13 @@ nix-channel --update
 nixos-install
 ```
 
-There are some variables you will need to change in the files contained herein, such as:
+The following variables need to be changed:
 
-- YOURUSERNAME: This is whatever your actual username is
-- YOUR NAME: This is your first and last name, such as John Smith
-- YOURDOMAIN: This is whatever your domain is
-- YOUREMAIL: This is your own email address
-- PORT: This is the port you use for sshd
-- HTTP/ROOT: This is the root directory of your webserver, such as `/var/www` or `/srv/httpd`
-- SERVERNAME: This is the name you've given to your server
+- VAR_USERNAME: This is whatever your actual username is
+- VAR_YOUR_NAME: This is your first and last name, such as John Smith
+- VAR_DOMAIN: This is whatever your domain is
+- VAR_EMAIL: This is your own email address
+- VAR_SSH_PORT: This is the port you use for `sshd`
+- VAR_HTTP_ROOT: This is the root directory of your webserver, such as `/var/www` or `/srv/httpd`
+- VAR_HOSTNAME: This is the name of your machine
 

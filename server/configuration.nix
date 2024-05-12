@@ -89,11 +89,11 @@ in
 	    # in the server.
   #  secrets = {
   #    secret1 = {
-  #      file = "/home/YOURUSERNAME/.secrets/secret1.age";
+  #      file = "/home/VAR_USERNAME/.secrets/secret1.age";
   #    };
   #    msmtp = { 
-  #      file = "/home/YOURUSERNAME/.secrets/msmtp.age";
-  #      owner = "YOURUSERNAME";
+  #      file = "/home/VAR_USERNAME/.secrets/msmtp.age";
+  #      owner = "VAR_USERNAME";
   #      group = "users";
 	    #	group = config.users.groups.sendmail.name;
   #      mode = "0440";
@@ -103,13 +103,13 @@ in
 	    # in `secrets.nix`.
 	    #
 	    # This tells `agenix` where to look for the private key.
-  #  identityPaths = [ "/home/YOURUSERNAME/.ssh/id_ed25519" ];
+  #  identityPaths = [ "/home/VAR_USERNAME/.ssh/id_ed25519" ];
   #};
 
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.YOURUSERNAME = import ./home.nix;
+    users.VAR_USERNAME = import ./home.nix;
   };
 
   # Use the systemd-boot EFI boot loader.
@@ -127,7 +127,7 @@ in
   #  system.autoUpgrade.enable = true;
   #  system.autoUpgrade.allowReboot = false;
 
-  networking.hostName = "nixos-server"; # Define your hostname.
+  networking.hostName = "VAR_HOSTNAME"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   # networking.interfaces.enp4s0.ipv4.addresses = [ { address = "10.11.12.122"; prefixLength = 24; } ];
   # networking.defaultGateway = "10.11.12.1";
@@ -200,9 +200,9 @@ in
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.YOURUSERNAME = {
+  users.users.VAR_USERNAME = {
     isNormalUser = true;
-    description = "YOURUSERNAME";
+    description = "VAR_USERNAME";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
@@ -293,11 +293,11 @@ in
         auth = true;
 	tls = true;
         tls_starttls = false;
-        from = "YOURUSERNAME@YOURDOMAIN.com";
-        host = "mail.YOURDOMAIN.com";
+        from = "VAR_USERNAME@VAR_DOMAIN.com";
+        host = "mail.VAR_DOMAIN.com";
         port = 465;
-        user = "YOURUSERNAME@YOURDOMAIN.com";
-        passwordeval = "${pkgs.coreutils-full}/bin/cat /home/YOURUSERNAME/.secrets/smtp.txt";
+        user = "VAR_USERNAME@VAR_DOMAIN.com";
+        passwordeval = "${pkgs.coreutils-full}/bin/cat /home/VAR_USERNAME/.secrets/smtp.txt";
       };
     };
   };
@@ -310,7 +310,7 @@ in
     # SSHD
     openssh = {
       enable = true;
-      ports = [ PORT ];
+      ports = [ VAR_SSH_PORT ];
     };
 
     # Apache
@@ -326,10 +326,10 @@ in
       '';
 
       virtualHosts.localhost = {
-        documentRoot = "/HTTP/ROOT";
+        documentRoot = "/VAR_HTTP_ROOT";
         extraConfig = ''
           DirectoryIndex index.php index.html
-	  <Directory "/HTTP/ROOT/cgi-bin">
+	  <Directory "/VAR_HTTP_ROOT/cgi-bin">
 	      AddHandler cgi-script .cgi .pl .py
 	      AllowOverride None
 	      DirectoryIndex index.cgi index.pl index.py
@@ -400,14 +400,14 @@ in
           writable = "yes";
         };
         nixshare = {
-          path = "/home/YOURUSERNAME";
+          path = "/home/VAR_USERNAME";
           comment = "NixOS Samba share";
           browseable = "yes";
           "read only" = "no";
           "guest ok" = "no";
           "create mask" = "0644";
           "directory mask" = "0755";
-          "force user" = "YOURUSERNAME";
+          "force user" = "VAR_USERNAME";
           "force group" = "users";
         };
       };
@@ -482,8 +482,8 @@ in
     #  description = "Check for NixOS updates";
     #  serviceConfig = {
     #    Type = "oneshot";
-    #    User = "YOURUSERNAME";
-    #    ExecStart = "/home/YOURUSERNAME/checkupdates.sh";
+    #    User = "VAR_USERNAME";
+    #    ExecStart = "/home/VAR_USERNAME/checkupdates.sh";
     #  };
     #};
 
@@ -491,8 +491,8 @@ in
       description = "Status update for NixOS";
       serviceConfig = {
         Type = "oneshot";
-        User = "YOURUSERNAME";
-        ExecStart = "/home/YOURUSERNAME/motd-2.0.sh";
+        User = "VAR_USERNAME";
+        ExecStart = "/home/VAR_USERNAME/motd-2.0.sh";
       };
     };
 
@@ -501,8 +501,8 @@ in
     #  serviceConfig = {
     #    Type = "oneshot";
     #    ExecStart = "/usr/local/bin/goToSleep";
-    #    StandardOutput = "append:/home/YOURUSERNAME/.suspend.log";
-    #    StandardError = "append:/home/YOURUSERNAME/.error-suspend.log";
+    #    StandardOutput = "append:/home/VAR_USERNAME/.suspend.log";
+    #    StandardError = "append:/home/VAR_USERNAME/.error-suspend.log";
     #  };
     #};
 
@@ -517,8 +517,8 @@ in
   #networking.firewall.allowPing = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 8080 8081 23970 ];
-  networking.firewall.allowedUDPPorts = [ 80 8080 8081 23970 ];
+  networking.firewall.allowedTCPPorts = [ 80 8080 8081 VAR_SSH_PORT ];
+  networking.firewall.allowedUDPPorts = [ 80 8080 8081 VAR_SSH_PORT ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 

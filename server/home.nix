@@ -2,8 +2,8 @@
 
 {
   # TODO please change the username & home direcotry to your own
-  home.username = "YOURUSERNAME";
-  home.homeDirectory = "/home/YOURUSERNAME";
+  home.username = "VAR_USERNAME";
+  home.homeDirectory = "/home/VAR_USERNAME";
 
   # link the configuration file in current directory to the specified location in home directory
   # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
@@ -171,7 +171,7 @@
 #  programs.git = {
 #    enable = true;
 #    userName = "Michael Brown";
-#    userEmail = "YOUREMAIL@gmail.com";
+#    userEmail = "VAR_EMAIL@gmail.com";
 #  };
 
   # starship - an customizable prompt for any shell

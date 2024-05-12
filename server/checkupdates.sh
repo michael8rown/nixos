@@ -1,14 +1,14 @@
 #!/run/current-system/sw/bin/bash
 
-if [[ -f /home/YOURUSERNAME/update.txt ]]; then
-  updates=`/run/current-system/sw/bin/cat /home/YOURUSERNAME/update.txt`
+if [[ -f /home/VAR_USERNAME/update.txt ]]; then
+  updates=`/run/current-system/sw/bin/cat /home/VAR_USERNAME/update.txt`
 else
   updates="No updates today"
 fi
 
-/run/current-system/sw/bin/echo -e "Content-Type: text/plain\r\nSubject: Update information for NixOS\r\n\r\n$updates" | sendmail YOUREMAIL@gmail.com
+/run/current-system/sw/bin/echo -e "Content-Type: text/plain\r\nSubject: Update information for NixOS\r\n\r\n$updates" | sendmail VAR_EMAIL@gmail.com
 
 sleep 1
 
-/run/current-system/sw/bin/rm /home/YOURUSERNAME/update.txt
+/run/current-system/sw/bin/rm /home/VAR_USERNAME/update.txt
 

@@ -17,4 +17,4 @@ fi
 UNAME=$(/run/current-system/sw/bin/uname -r)
 MSG="$DATE\n$OS\n$UNAME\n$UPT\n$WHO2"
 
-/run/current-system/sw/bin/echo -e "Content-Type: text/plain\r\nSubject: SERVERNAME status\r\n\r\n$MSG" | /run/wrappers/bin/sendmail YOUREMAIL@gmail.com
+/run/current-system/sw/bin/echo -e "Content-Type: text/plain\r\nSubject: VAR_HOSTNAME status\r\n\r\n$MSG" | /run/wrappers/bin/sendmail VAR_EMAIL@gmail.com
