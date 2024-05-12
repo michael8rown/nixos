@@ -15,6 +15,7 @@ mkdir /mnt/boot
 mount -o umask=0077 /dev/vda1 /mnt/boot
 swapon /dev/vda3
 nixos-generate-config --root /mnt
+cd /mnt/etc/nixos
 mv configuration.nix configuration.nix.orig
 git clone https://github.com/michael8rown/nixos.git
 # now move the proper configurations into place, both configuration.nix and home.nix
