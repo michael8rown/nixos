@@ -3,7 +3,7 @@
 if [ ! "$1" ] || [ ! "$2" ]
 then
   echo "You must give 2 versions to compare."
-  echo "Example: ./list 13 14"
+  echo "Example: ./listupdates 13 14"
   exit
 fi
 

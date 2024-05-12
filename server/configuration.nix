@@ -89,11 +89,11 @@ in
 	    # in the server.
   #  secrets = {
   #    secret1 = {
-  #      file = "/home/username/.secrets/secret1.age";
+  #      file = "/home/YOURUSERNAME/.secrets/secret1.age";
   #    };
   #    msmtp = { 
-  #      file = "/home/username/.secrets/msmtp.age";
-  #      owner = "username";
+  #      file = "/home/YOURUSERNAME/.secrets/msmtp.age";
+  #      owner = "YOURUSERNAME";
   #      group = "users";
 	    #	group = config.users.groups.sendmail.name;
   #      mode = "0440";
@@ -103,13 +103,13 @@ in
 	    # in `secrets.nix`.
 	    #
 	    # This tells `agenix` where to look for the private key.
-  #  identityPaths = [ "/home/username/.ssh/id_ed25519" ];
+  #  identityPaths = [ "/home/YOURUSERNAME/.ssh/id_ed25519" ];
   #};
 
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.username = import ./home.nix;
+    users.YOURUSERNAME = import ./home.nix;
   };
 
   # Use the systemd-boot EFI boot loader.
@@ -200,9 +200,9 @@ in
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.username = {
+  users.users.YOURUSERNAME = {
     isNormalUser = true;
-    description = "username";
+    description = "YOURUSERNAME";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
@@ -293,11 +293,11 @@ in
         auth = true;
 	tls = true;
         tls_starttls = false;
-        from = "username@domain.com";
-        host = "mail.domain.com";
+        from = "YOURUSERNAME@YOURDOMAIN.com";
+        host = "mail.YOURDOMAIN.com";
         port = 465;
-        user = "username@domain.com";
-        passwordeval = "${pkgs.coreutils-full}/bin/cat /home/username/.secrets/smtp.txt";
+        user = "YOURUSERNAME@YOURDOMAIN.com";
+        passwordeval = "${pkgs.coreutils-full}/bin/cat /home/YOURUSERNAME/.secrets/smtp.txt";
       };
     };
   };
@@ -310,8 +310,7 @@ in
     # SSHD
     openssh = {
       enable = true;
-      # must your own port number!!
-      ports = [ PORT ]; 
+      ports = [ PORT ];
     };
 
     # Apache
@@ -327,10 +326,10 @@ in
       '';
 
       virtualHosts.localhost = {
-        documentRoot = "/http/root";
+        documentRoot = "/HTTP/ROOT";
         extraConfig = ''
           DirectoryIndex index.php index.html
-	  <Directory "/http/root/cgi-bin">
+	  <Directory "/HTTP/ROOT/cgi-bin">
 	      AddHandler cgi-script .cgi .pl .py
 	      AllowOverride None
 	      DirectoryIndex index.cgi index.pl index.py
@@ -401,14 +400,14 @@ in
           writable = "yes";
         };
         nixshare = {
-          path = "/home/username";
+          path = "/home/YOURUSERNAME";
           comment = "NixOS Samba share";
           browseable = "yes";
           "read only" = "no";
           "guest ok" = "no";
           "create mask" = "0644";
           "directory mask" = "0755";
-          "force user" = "username";
+          "force user" = "YOURUSERNAME";
           "force group" = "users";
         };
       };
@@ -483,8 +482,8 @@ in
     #  description = "Check for NixOS updates";
     #  serviceConfig = {
     #    Type = "oneshot";
-    #    User = "username";
-    #    ExecStart = "/home/username/checkupdates.sh";
+    #    User = "YOURUSERNAME";
+    #    ExecStart = "/home/YOURUSERNAME/checkupdates.sh";
     #  };
     #};
 
@@ -492,8 +491,8 @@ in
     #  description = "Status update for NixOS";
     #  serviceConfig = {
     #    Type = "oneshot";
-    #    User = "username";
-    #    ExecStart = "/home/username/motd-2.0.sh";
+    #    User = "YOURUSERNAME";
+    #    ExecStart = "/home/YOURUSERNAME/motd-2.0.sh";
     #  };
     #};
 
@@ -502,8 +501,8 @@ in
     #  serviceConfig = {
     #    Type = "oneshot";
     #    ExecStart = "/usr/local/bin/goToSleep";
-    #    StandardOutput = "append:/home/username/.suspend.log";
-    #    StandardError = "append:/home/username/.error-suspend.log";
+    #    StandardOutput = "append:/home/YOURUSERNAME/.suspend.log";
+    #    StandardError = "append:/home/YOURUSERNAME/.error-suspend.log";
     #  };
     #};
 
