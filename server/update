@@ -1,0 +1,43 @@
+#!/run/current-system/sw/bin/bash
+set -e -o pipefail
+
+j=`/home/michael/gen list | /run/current-system/sw/bin/grep current | /run/current-system/sw/bin/sed -E 's/^ +([0-9]+) .*$/\1/'`
+#echo ${j}
+
+/run/current-system/sw/bin/nixos-rebuild build -I nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs -I nixos-config=/etc/nixos/configuration.nix
+sleep 1
+
+/nix/store/39641lpmk9mp3h9gjxv72gqzqzr2mrgd-nvd-0.2.3/bin/nvd diff /nix/var/nix/profiles/system-${j}-link /result > /update.txt
+
+if [[ $(/run/current-system/sw/bin/grep "No version or selection state changes" update.txt) ]]
+then
+  message=`echo "System is up-to-date! Nothing to do!"`
+else
+  echo "The following updates are available:"
+  cat /update.txt
+  echo
+  read -p "Do you want to update the system now? (y/N) " proceed
+  echo
+  if [[ "$proceed" =~ [Yy] ]]
+  then
+    echo "Updating the system ..."
+    /run/current-system/sw/bin/nixos-rebuild switch -I nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs -I nixos-config=/etc/nixos/configuration.nix
+  fi
+fi
+sleep .3
+
+/run/current-system/sw/bin/rm /result
+sleep .3
+
+/run/current-system/sw/bin/nix-collect-garbage
+sleep .3
+
+/run/current-system/sw/bin/chown michael:users /update.txt
+sleep .3
+
+/run/current-system/sw/bin/mv /update.txt /home/michael/update.txt
+
+echo
+echo ${message}
+echo
+

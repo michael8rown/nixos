@@ -1,0 +1,11 @@
+#!/run/current-system/sw/bin/bash
+
+if [ ! "$1" ] || [ ! "$2" ]
+then
+  echo "You must give 2 versions to compare."
+  echo "Example: ./list 13 14"
+  exit
+fi
+
+nvd diff /nix/var/nix/profiles/system-{$1,$2}-link
+
