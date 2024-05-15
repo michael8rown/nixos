@@ -159,7 +159,7 @@
   programs.git = {
     enable = true;
     userName = "VAR_YOUR_NAME";
-    userEmail = "VAR_EMAIL@DOMAIN.com";
+    userEmail = "VAR_EMAIL";
   };
 
   programs.bash = {

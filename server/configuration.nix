@@ -293,10 +293,10 @@ in
         auth = true;
 	tls = true;
         tls_starttls = false;
-        from = "VAR_USERNAME@VAR_DOMAIN.com";
-        host = "mail.VAR_DOMAIN.com";
+        from = "VAR_MSMTP_EMAIL";
+        host = "VAR_MSMTP_SERVER";
         port = 465;
-        user = "VAR_USERNAME@VAR_DOMAIN.com";
+        user = "VAR_MSMTP_EMAIL";
         passwordeval = "${pkgs.coreutils-full}/bin/cat /home/VAR_USERNAME/.secrets/smtp.txt";
       };
     };
@@ -326,10 +326,10 @@ in
       '';
 
       virtualHosts.localhost = {
-        documentRoot = "/VAR_HTTP_ROOT";
+        documentRoot = "VAR_HTTP_ROOT";
         extraConfig = ''
           DirectoryIndex index.php index.html
-	  <Directory "/VAR_HTTP_ROOT/cgi-bin">
+	  <Directory "VAR_HTTP_ROOT/cgi-bin">
 	      AddHandler cgi-script .cgi .pl .py
 	      AllowOverride None
 	      DirectoryIndex index.cgi index.pl index.py

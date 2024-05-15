@@ -6,7 +6,7 @@ else
   updates="No updates today"
 fi
 
-/run/current-system/sw/bin/echo -e "Content-Type: text/plain\r\nSubject: Update information for NixOS\r\n\r\n$updates" | sendmail VAR_EMAIL@gmail.com
+/run/current-system/sw/bin/echo -e "Content-Type: text/plain\r\nSubject: Update information for NixOS\r\n\r\n$updates" | sendmail VAR_EMAIL
 
 sleep 1
 
