@@ -42,4 +42,4 @@ The following variables need to be changed:
 
 ### TO-DO
 
-- [*] Write a script to change the variables
+- [x] Write a script to change the variables
