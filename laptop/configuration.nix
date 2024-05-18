@@ -250,6 +250,7 @@
     killall
     wireguard-tools
     clamav
+    efibootmgr
   ];
 
 
