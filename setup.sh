@@ -9,7 +9,7 @@ arr+=(
   ["VAR_MSMTP_EMAIL"]=username@yourdomain.com	# the email address that should be used for `msmtp`
   ["VAR_MSMTP_SERVER"]=mail.yourdomain.com	# the mailserver address, such as `mail.yourdomain.com`
   ["VAR_EMAIL"]=personalemail@gmail.com		# your personal email address, such as `johnsmith@qooqle.com`
-  ["VAR_SSH_PORT"]=####			      # the port you use for `sshd`
+  ["VAR_SSH_PORT"]=####				# the port you use for `sshd`
   ["VAR_HTTP_ROOT"]=/http/root			# the root directory of your webserver, e.g., `/var/www` or `/srv/httpd`
   ["VAR_HOSTNAME"]=hostname			# the name of your machine
 )
