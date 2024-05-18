@@ -131,8 +131,10 @@
       };
 
       "org/gnome/shell/extensions/Logo-menu" = {
-	menu-button-icon-image = 18;
-	symbolic-icon = false;
+#	menu-button-icon-image = 18; 	# NixOS
+#	symbolic-icon = false; 		# NixOS color
+	menu-button-icon-image = 0;	# Apple
+	symbolic-icon = true;		# Apple white
 	show-power-options = true;
 	show-lockscreen = true;
 	hide-softwarecentre = true;
