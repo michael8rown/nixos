@@ -275,7 +275,8 @@ in
     samba
 #    (callPackage <agenix/pkgs/agenix.nix> {})
     wireguard-tools
-  ];
+    efibootmgr
+];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
