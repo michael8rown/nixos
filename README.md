@@ -2,6 +2,8 @@
 
 Configurations and miscellaneous files for my home server and my laptops.
 
+**NOTE!!** I've converted my installations to flake-based systems. The following instructions have not been updated; they assume you will add channels to install NixOS and Home Manager. The config files don't allow for that, though. You will need to take that into account before proceeding.
+
 ### Installation instructions
 
 ```
@@ -43,3 +45,4 @@ The following variables need to be changed:
 ### TO-DO
 
 - [x] Write a script to change the variables
+- [ ] Update instructions to account for flakes
