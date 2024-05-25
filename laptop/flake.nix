@@ -35,15 +35,5 @@
 	]; 
       };
     };
-    hmConfig = {
-      VAR_HOSTNAME = home-manager.lib.homeManagerConfiguration {
-	inherit system pkgs;
-	username = "VAR_USERNAME";
-	homeDirectory = "/home/VAR_USERNAME";
-	configuration = {
-	  imports = [ ./home.nix ];
-	};
-      };
-    };
   };
 }

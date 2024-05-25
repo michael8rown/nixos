@@ -181,7 +181,8 @@
   };
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  # Moved to flake.nix 5/25/2024
+#  nixpkgs.config.allowUnfree = true;
 
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
