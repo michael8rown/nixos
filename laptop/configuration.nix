@@ -8,7 +8,7 @@
   nix = {
     settings = {
       #      experimental-features = [ "nix-command" "flakes" ];
-      experimental-features = [ "nix-command" ];
+      experimental-features = [ "nix-command" "flakes" ];
 #      auto-optimise-store = true;
 #      ^^^^^ this fails -- Loaded: bad-setting (Reason: Unit nix-optimise.timer has a bad unit file setting.)
 #            Feb 17 15:15:52 nixos systemd[1]: nix-optimise.timer: Timer unit lacks value setting. Refusing.
@@ -25,19 +25,20 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos>
-#      ./iphone.nix
+      #<home-manager/nixos>
+      #./iphone.nix
     ];
 
 #  iphone stuff doesn't work
 #  iphone.enable = true;
 #  iphone.user = "VAR_USERNAME";
 
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    users.VAR_USERNAME = import ./home.nix;
-  };
+#  REMOVED MAY 25, 2024, NOW CONTROLLED BY FLAKES
+#  home-manager = {
+#    useGlobalPkgs = true;
+#    useUserPackages = true;
+#    users.VAR_USERNAME = import ./home.nix;
+#  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -164,6 +165,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.VAR_USERNAME = {
     isNormalUser = true;
+    initialPassword = "password";
     description = "VAR_USERNAME";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [

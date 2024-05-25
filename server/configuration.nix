@@ -55,7 +55,7 @@ in
   nix = {
     settings = {
       #      experimental-features = [ "nix-command" "flakes" ];
-      experimental-features = [ "nix-command" ];
+      experimental-features = [ "nix-command" "flakes" ];
       #auto-optimise-store = true;
       #^^^^^ this fails -- Loaded: bad-setting (Reason: Unit nix-optimise.timer has a bad unit file setting.)
       #      Feb 17 15:15:52 nixos systemd[1]: nix-optimise.timer: Timer unit lacks value setting. Refusing.
@@ -79,7 +79,7 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos>
+      #<home-manager/nixos>
       #<agenix/modules/age.nix>
     ];
 
@@ -106,11 +106,12 @@ in
   #  identityPaths = [ "/home/VAR_USERNAME/.ssh/id_ed25519" ];
   #};
 
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    users.VAR_USERNAME = import ./home.nix;
-  };
+#  REMOVED MAY 25, 2024, NOW CONTROLLED BY FLAKE
+#  home-manager = {
+#    useGlobalPkgs = true;
+#    useUserPackages = true;
+#    users.VAR_USERNAME = import ./home.nix;
+#  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -202,6 +203,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.VAR_USERNAME = {
     isNormalUser = true;
+    initialPassword = "password";
     description = "VAR_USERNAME";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
