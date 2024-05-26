@@ -1,8 +1,6 @@
-# NixOS configurations
+# NixOS flake-based configurations
 
 Configurations and miscellaneous files for my home server and my laptops.
-
-**NOTE!!** I've converted my installations to flake-based systems. The following instructions have not been updated; they assume you will add channels to install NixOS and Home Manager. The config files don't allow for that, though. You will need to take that into account before proceeding.
 
 ### Installation instructions
 
@@ -18,15 +16,26 @@ mkdir /mnt/boot
 mount -o umask=0077 /dev/vda1 /mnt/boot
 swapon /dev/vda3
 # Also, be sure to format/mount any other partitions, such as /home or /var if needed
+
 # Once everything is created, formatted, and mounted ...
 nixos-generate-config --root /mnt
 cd /mnt/etc/nixos
 mv configuration.nix configuration.nix.orig
 git clone https://github.com/michael8rown/nixos.git
-# Move configuration.nix and home.nix into place
-nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz home-manager
+cd nixos
+# Edit variables in setup.sh (see Variables section below) and then run it ...
+nano setup.sh
+./setup.sh
+# Move configuration.nix, flake.nix, and home.nix into place, e.g.,
+mv laptop/*.nix ../.
+# Return to the previous directory
+cd ../
+# Remove nixos channel
+nix-channel --remove nixos
 nix-channel --update
-nixos-install
+# Install system from the flake
+nixos-install --flake .#yourhostname
+# Be sure to change yourhostname above to whatever you set as VAR_HOSTNAME in setup.sh
 ```
 
 ### Variables
@@ -45,4 +54,4 @@ The following variables need to be changed:
 ### TO-DO
 
 - [x] Write a script to change the variables
-- [ ] Update instructions to account for flakes
+- [x] Update instructions to account for flakes
