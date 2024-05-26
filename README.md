@@ -26,16 +26,15 @@ cd nixos
 # Edit variables in setup.sh (see Variables section below) and then run it ...
 nano setup.sh
 ./setup.sh
-# Move configuration.nix, flake.nix, and home.nix into place, e.g.,
-mv laptop/*.nix ../.
+# Move all contents of this folder into place, e.g.,
+mv * /etc/nixos/.
 # Return to the previous directory
 cd ../
 # Remove nixos channel
 nix-channel --remove nixos
 nix-channel --update
 # Install system from the flake
-nixos-install --flake .#yourhostname
-# Be sure to change yourhostname above to whatever you set as VAR_HOSTNAME in setup.sh
+nixos-install --flake .#system
 ```
 
 ### Variables
@@ -50,6 +49,7 @@ The following variables need to be changed:
 - VAR_SSH_PORT: This is the port you use for `sshd`
 - VAR_HTTP_ROOT: This is the root directory of your webserver, such as `/var/www` or `/srv/httpd`
 - VAR_HOSTNAME: This is the name of your machine
+- VAR_PROFILE: This is profile you're installing, either `laptop` or `server`
 
 ### TO-DO
 

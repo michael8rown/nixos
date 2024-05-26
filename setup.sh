@@ -1,4 +1,4 @@
-#!/run/current-system/sw/bin/bash
+#!/bin/bash
 set -e -o pipefail
 
 declare -A arr
@@ -12,20 +12,17 @@ arr+=(
   ["VAR_SSH_PORT"]=####				# the port you use for `sshd`
   ["VAR_HTTP_ROOT"]=/http/root			# the root directory of your webserver, e.g., `/var/www` or `/srv/httpd`
   ["VAR_HOSTNAME"]=hostname			# the name of your machine
+  ["VAR_PROFILE"]=profile			# the profile you're installing, laptop or server
 )
-
-echo "The following configurations are available:"
-echo
-find . -type d | grep -E "^./[^.](.){2,}" | sed -E "s/^.\///g"
-echo
-read -p "Which one would you like to setup? " configuration
-
-if [ ! -d $configuration ]; then
-  echo "$configuration wasn't a valid choice. Try again."
-  exit
-fi
 
 for key in ${!arr[@]}; do
   value=`echo ${arr[${key}]}`
-  sed -i "s#${key}#${value}#g" $configuration/*	# ${arr[${key}]}
+  find . -type f $(printf "! -name %s " setup.sh) -print0 | xargs -0 sed -i "s#${key}#${value}#g"	# ${arr[${key}]}
 done
+
+echo "All variables have been updated."
+echo "Move all contents of this folder to your main configuration folder, such as /etc/nixos, e.g.,"
+echo
+echo "      mv * /etc/nixos/."
+echo
+
