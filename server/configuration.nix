@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, systemSettings, ... }:
 
 let
   perlEnv = pkgs.perl.withPackages (p: with p; [
@@ -54,7 +54,6 @@ in
 {
   nix = {
     settings = {
-      #      experimental-features = [ "nix-command" "flakes" ];
       experimental-features = [ "nix-command" "flakes" ];
       #auto-optimise-store = true;
       #^^^^^ this fails -- Loaded: bad-setting (Reason: Unit nix-optimise.timer has a bad unit file setting.)

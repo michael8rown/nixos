@@ -27,7 +27,7 @@
       msmtp_email = "VAR_MSMTP_EMAIL";		# email address used for msmtp
       msmtp_server = "VAR_MSMTP_SERVER";	# the mailserver address, such as `mail.yourdomain.com`
       email = "VAR_EMAIL";			# your personal email address, such as `johnsmith@qooqle.com`
-      ssh_port = VAR_SSH_PORT;		# the port you use for `sshd`
+      ssh_port = VAR_SSH_PORT;			# the port you use for `sshd`
       http_root = "VAR_HTTP_ROOT";		# the root directory of your webserver, e.g., `/var/www` or `/srv/httpd`
     };
 
