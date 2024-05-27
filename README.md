@@ -4,37 +4,48 @@ Configurations and miscellaneous files for my home server and my laptops.
 
 ### Installation instructions
 
-```
-sudo su
-cfdisk /dev/vda
-mkfs.ext4 /dev/vda2
-# If you have an existing boot partition, skip the next step!!
-mkfs.fat -F32 /dev/vda1
-mkswap /dev/vda3
-mount /dev/vda2 /mnt
-mkdir /mnt/boot
-mount -o umask=0077 /dev/vda1 /mnt/boot
-swapon /dev/vda3
-# Also, be sure to format/mount any other partitions, such as /home or /var if needed
+`part.sh` will automatically partition the drive and mount those paritions like this:
 
-# Once everything is created, formatted, and mounted ...
-nixos-generate-config --root /mnt
-cd /mnt/etc/nixos
-mv configuration.nix configuration.nix.orig
-git clone https://github.com/michael8rown/nixos.git
-cd nixos
-# Edit variables in setup.sh (see Variables section below) and then run it ...
-nano setup.sh
-./setup.sh
-# Move all contents of this folder into place, e.g.,
-mv * /etc/nixos/.
-# Return to the previous directory
-cd ../
-# Remove nixos channel
-nix-channel --remove nixos
-nix-channel --update
-# Install system from the flake
-nixos-install --flake .#system
+```
+	vda           8:0    0    30G  0 disk 
+	├─vda1        8:1    0     1G  0 part /boot
+	├─vda2        8:2    0    25G  0 part /
+	└─vda3        8:5    0     4G  0 part [SWAP]
+```
+
+If you require a different partition layout, then follow the steps below, creating whatever partitions you want.
+
+```
+	sudo su
+	cfdisk /dev/vda
+	mkfs.ext4 /dev/vda#
+	# If you have an existing boot partition, skip the next step!!
+	mkfs.fat -F32 /dev/vda#
+	mkswap /dev/vda#
+	mount /dev/vda# /mnt
+	mkdir /mnt/boot
+	mount -o umask=0077 /dev/vda# /mnt/boot
+	swapon /dev/vda#
+	# Also, be sure to format/mount any other partitions, such as /home or /var if needed
+
+	# Once everything is created, formatted, and mounted ...
+	nixos-generate-config --root /mnt
+	cd /mnt/etc/nixos
+	mv configuration.nix configuration.nix.orig
+	git clone https://github.com/michael8rown/nixos.git
+	cd nixos
+	# Edit variables in setup.sh (see Variables section below) and then run it ...
+	nano setup.sh
+	./setup.sh
+	# Move all contents of this folder into place, e.g.,
+	mv * /etc/nixos/.
+	# Return to the previous directory
+	cd ../
+	# Remove nixos channel
+	nix-channel --remove nixos
+	nix-channel --update
+	# Install system from the flake
+	nixos-install --flake .#system
 ```
 
 ### Variables
