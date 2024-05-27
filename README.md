@@ -48,7 +48,10 @@ cd ../
 nix-channel --remove nixos
 nix-channel --update
 # Install system from the flake
-nixos-install --flake .
+nixos-install --flake .#hostname
+# nixos-install --flake requires you to identify a hostname
+# be sure to include it here
+# nixos-rebuild later does not require it
 ```
 
 ### Variables
