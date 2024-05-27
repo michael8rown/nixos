@@ -16,36 +16,39 @@ Configurations and miscellaneous files for my home server and my laptops.
 If you require a different partition layout, then edit `part.sh` accordingly or follow the steps below, manually creating whatever partitions you need.
 
 ```
-	sudo su
-	cfdisk /dev/vda
-	mkfs.ext4 /dev/vda#
-	# If you have an existing boot partition, skip the next step!!
-	mkfs.fat -F32 /dev/vda#
-	mkswap /dev/vda#
-	mount /dev/vda# /mnt
-	mkdir /mnt/boot
-	mount -o umask=0077 /dev/vda# /mnt/boot
-	swapon /dev/vda#
-	# Also, be sure to format/mount any other partitions, such as /home or /var if needed
+sudo su
+cfdisk /dev/vda
+mkfs.ext4 /dev/vda#
+# If you have an existing boot partition, skip the next step!!
+mkfs.fat -F32 /dev/vda#
+mkswap /dev/vda#
+mount /dev/vda# /mnt
+mkdir /mnt/boot
+mount -o umask=0077 /dev/vda# /mnt/boot
+swapon /dev/vda#
+# Also, be sure to format/mount any other partitions, such as /home or /var if needed
+```
 
-	# Once everything is created, formatted, and mounted ...
-	nixos-generate-config --root /mnt
-	cd /mnt/etc/nixos
-	mv configuration.nix configuration.nix.orig
-	git clone https://github.com/michael8rown/nixos.git
-	cd nixos
-	# Edit variables in setup.sh (see Variables section below) and then run it ...
-	nano setup.sh
-	./setup.sh
-	# Move all contents of this folder into place, e.g.,
-	mv * /etc/nixos/.
-	# Return to the previous directory
-	cd ../
-	# Remove nixos channel
-	nix-channel --remove nixos
-	nix-channel --update
-	# Install system from the flake
-	nixos-install --flake .#system
+Once everything is created, formatted, and mounted, install NixOS as follows:
+
+```
+nixos-generate-config --root /mnt
+cd /mnt/etc/nixos
+mv configuration.nix configuration.nix.orig
+git clone https://github.com/michael8rown/nixos.git
+cd nixos
+# Edit variables in setup.sh (see Variables section below) and then run it ...
+nano setup.sh
+./setup.sh
+# Move all contents of this folder into place, e.g.,
+mv * /etc/nixos/.
+# Return to the previous directory
+cd ../
+# Remove nixos channel
+nix-channel --remove nixos
+nix-channel --update
+# Install system from the flake
+nixos-install --flake .#system
 ```
 
 ### Variables
