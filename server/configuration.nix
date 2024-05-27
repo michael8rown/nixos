@@ -332,7 +332,7 @@ in
         documentRoot = systemSettings.http_root;
         extraConfig = ''
           DirectoryIndex index.php index.html
-	  <Directory "systemSettings.http_root/cgi-bin">
+	  <Directory "${systemSettings.http_root}/cgi-bin">
 	      AddHandler cgi-script .cgi .pl .py
 	      AllowOverride None
 	      DirectoryIndex index.cgi index.pl index.py
