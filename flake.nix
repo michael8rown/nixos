@@ -31,14 +31,12 @@
       system = lib.nixosSystem {
 	inherit system;
 	modules = [ 
-#	  ./configuration.nix
-#          (./. + "/profiles" + ("/" + systemSettings.profile) + "/configuration.nix")
           (./. + ("/" + systemSettings.profile) + "/configuration.nix")
 	  home-manager.nixosModules.home-manager {
 	    home-manager.useGlobalPkgs = true;
 	    home-manager.useUserPackages = true;
 	    home-manager.users.VAR_USERNAME = {
-	      imports = [ ./home.nix ];
+              imports = [ ./home.nix ];
 	    };
 	  }
 	]; 
