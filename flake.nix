@@ -1,5 +1,5 @@
 {
-  description = "Mike's VAR_PROFILE Flake";
+  description = "Mike's Flake";
 
   inputs =
     {
@@ -19,10 +19,16 @@
     };
     lib = nixpkgs.lib;
 
-    # ---- SYSTEM SETTINGS ---- #
     systemSettings = {
-      hostname = "VAR_HOSTNAME";
-      profile = "VAR_PROFILE";
+      hostname = "VAR_HOSTNAME";		# the name of your machine
+      profile = "VAR_PROFILE";			# the profile you're installing, laptop or server
+      username = "VAR_USERNAME";		# your username
+      fullname = "VAR_YOUR_NAME";		# your full name, such as "John Smith"
+      msmtp_email = "VAR_MSMTP_EMAIL";		# email address used for msmtp
+      msmtp_server = "VAR_MSMTP_SERVER";	# the mailserver address, such as `mail.yourdomain.com`
+      email = "VAR_EMAIL";			# your personal email address, such as `johnsmith@qooqle.com`
+      ssh_port = "VAR_SSH_PORT";		# the port you use for `sshd`
+      http_root = "VAR_HTTP_ROOT";		# the root directory of your webserver, e.g., `/var/www` or `/srv/httpd`
     };
 
   in
@@ -35,7 +41,7 @@
 	  home-manager.nixosModules.home-manager {
 	    home-manager.useGlobalPkgs = true;
 	    home-manager.useUserPackages = true;
-	    home-manager.users.VAR_USERNAME = {
+	    home-manager.users.${systemSettings.username} = {
               imports = [ ./home.nix ];
 	    };
 	  }

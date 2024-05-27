@@ -2,8 +2,8 @@
 
 {
   # TODO please change the username & home direcotry to your own
-  home.username = "VAR_USERNAME";
-  home.homeDirectory = "/home/VAR_USERNAME";
+  home.username = systemSettings.username;
+  home.homeDirectory = "/home/"+systemSettings.username;
 
   # link the configuration file in current directory to the specified location in home directory
   # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
@@ -160,8 +160,8 @@
   # basic configuration of git, please change to your own
   programs.git = {
     enable = true;
-    userName = "VAR_YOUR_NAME";
-    userEmail = "VAR_EMAIL";
+    userName = systemSettings.fullname;
+    userEmail = systemSettings.email;
   };
 
   programs.bash = {
