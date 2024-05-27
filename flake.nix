@@ -34,7 +34,7 @@
   in
   {
     nixosConfigurations = {
-      system = lib.nixosSystem {
+      ${systemSettings.hostname} = lib.nixosSystem {
         inherit system;
         specialArgs = {
           inherit systemSettings;
