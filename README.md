@@ -48,7 +48,7 @@ cd ../
 nix-channel --remove nixos
 nix-channel --update
 # Install system from the flake
-nixos-install --flake .#system
+nixos-install --flake .
 ```
 
 ### Variables
