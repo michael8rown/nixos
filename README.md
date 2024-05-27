@@ -13,7 +13,7 @@ Configurations and miscellaneous files for my home server and my laptops.
 	└─vda3        8:5    0     4G  0 part [SWAP]
 ```
 
-If you require a different partition layout, then follow the steps below, creating whatever partitions you want.
+If you require a different partition layout, then edit `part.sh` accordingly or follow the steps below, manually creating whatever partitions you need.
 
 ```
 	sudo su
