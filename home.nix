@@ -2,7 +2,7 @@
 
 {
   # TODO please change the username & home direcotry to your own
-  home.username = "systemSettings.username";
+  home.username = systemSettings.username;
   home.homeDirectory = "/home/"+systemSettings.username;
 
   # link the configuration file in current directory to the specified location in home directory
@@ -160,8 +160,8 @@
   # basic configuration of git, please change to your own
   programs.git = {
     enable = true;
-    userName = "systemSettings.fullname";
-    userEmail = "systemSettings.email";
+    userName = systemSettings.fullname;
+    userEmail = systemSettings.email;
   };
 
   programs.bash = {
