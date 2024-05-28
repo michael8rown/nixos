@@ -105,13 +105,6 @@ in
   #  identityPaths = [ "/home/"+systemSettings.username+"/.ssh/id_ed25519" ];
   #};
 
-#  REMOVED MAY 25, 2024, NOW CONTROLLED BY FLAKE
-#  home-manager = {
-#    useGlobalPkgs = true;
-#    useUserPackages = true;
-#    users.${systemSettings.username} = import ./home.nix;
-#  };
-
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -122,7 +115,6 @@ in
   #    allowReboot = false;
   #    # channel = "https://nixos.org/channels/nixos-23.11";
   #  };
-
 
   #  system.autoUpgrade.enable = true;
   #  system.autoUpgrade.allowReboot = false;
@@ -158,9 +150,6 @@ in
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
-
-  #home-manager.useUserPackages = true;
-  #home-manager.useGlobalPkgs = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -216,10 +205,6 @@ in
     #  thunderbird
     ];
   };
-
-  # Allow unfree packages
-  # Moved to flake.nix 5/25/2024
-#  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -418,12 +403,10 @@ in
 
   }; # end of services
 
-
   #systemd.targets.sleep.enable = false;
   #systemd.targets.suspend.enable = false;
   #systemd.targets.hibernate.enable = false;
   #systemd.targets.hybrid-sleep.enable = false;
-
 
   systemd.timers = {
 
@@ -469,7 +452,6 @@ in
     #};
 
   };
-
 
   systemd.services = {
 

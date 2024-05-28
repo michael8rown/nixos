@@ -1,7 +1,6 @@
 { config, pkgs, systemSettings, ... }:
 
 {
-  # TODO please change the username & home direcotry to your own
   home.username = systemSettings.username;
   home.homeDirectory = "/home/"+systemSettings.username;
 

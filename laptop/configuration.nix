@@ -32,13 +32,6 @@
 #  iphone.enable = true;
 #  iphone.user = systemSettings.username;
 
-#  REMOVED MAY 25, 2024, NOW CONTROLLED BY FLAKES
-#  home-manager = {
-#    useGlobalPkgs = true;
-#    useUserPackages = true;
-#    users.${systemSettings.username} = import ./home.nix;
-#  };
-
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -49,7 +42,6 @@
   #    allowReboot = false;
   #    # channel = "https://nixos.org/channels/nixos-23.11";
   #  };
-
 
   #  system.autoUpgrade.enable = true;
   #  system.autoUpgrade.allowReboot = false;
@@ -114,11 +106,8 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-
-
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -179,11 +168,6 @@
     ];
   };
 
-  # Allow unfree packages
-  # Moved to flake.nix 5/25/2024
-#  nixpkgs.config.allowUnfree = true;
-
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.users.alice = {
   #   isNormalUser = true;
@@ -193,7 +177,6 @@
   #     tree
   #   ];
   # };
-
 
   environment.gnome.excludePackages = with pkgs; [
     gnome-tour
@@ -255,7 +238,6 @@
     efibootmgr
   ];
 
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   # environment.systemPackages = with pkgs; [
@@ -297,7 +279,6 @@
   systemd.services = {
 
   };
-
 
 
   # Open ports in the firewall.
