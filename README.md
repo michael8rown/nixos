@@ -24,7 +24,6 @@ cd nixos
 If you require a different partition layout, then edit `part.sh` accordingly or follow the steps below, manually creating whatever partitions you need.
 
 ```
-sudo su
 cfdisk /dev/vda
 mkfs.ext4 /dev/vda#
 # If you have an existing boot partition, skip the next step!!
