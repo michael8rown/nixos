@@ -4,6 +4,14 @@ Configurations and miscellaneous files for my home server and my laptops.
 
 ### Installation instructions
 
+Boot into the NixOS installation iso. Close the installer and open `console`, then run
+
+```
+sudo su
+git clone https://github.com/michael8rown/nixos.git
+cd nixos
+```
+
 `part.sh` will automatically partition the drive and mount those paritions like this:
 
 ```
@@ -35,15 +43,10 @@ Once everything is created, formatted, and mounted, install NixOS as follows:
 nixos-generate-config --root /mnt
 cd /mnt/etc/nixos
 mv configuration.nix configuration.nix.orig
-git clone https://github.com/michael8rown/nixos.git
-cd nixos
+mv /home/nixos/nixos/* .
 # Edit variables in setup.sh (see Variables section below) and then run it ...
 nano setup.sh
 ./setup.sh
-# Move all contents of this folder into place, e.g.,
-mv * /etc/nixos/.
-# Return to the previous directory
-cd ../
 # Remove nixos channel
 nix-channel --remove nixos
 nix-channel --update
