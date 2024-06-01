@@ -240,7 +240,7 @@ in
     gnome.gnome-terminal
     gnome-photos
     gnome.eog
-    gnome.gedit # text editor
+    gedit # text editor
     gnome.geary # email reader
     evince # document viewer
     libvirt
