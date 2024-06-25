@@ -1,13 +1,10 @@
 #!/run/current-system/sw/bin/bash
 set -e -o pipefail
 
-j=`/home/VAR_USERNAME/gen list | /run/current-system/sw/bin/grep current | /run/current-system/sw/bin/sed -E 's/^ +([0-9]+) .*$/\1/'`
-#echo ${j}
-
 /run/current-system/sw/bin/nixos-rebuild build --flake /etc/nixos/.
 sleep 1
 
-/run/current-system/sw/bin/nvd diff /nix/var/nix/profiles/system-${j}-link /result > /update.txt
+/run/current-system/sw/bin/nvd diff /run/current-system /result > /update.txt
 
 if [[ $(/run/current-system/sw/bin/grep "No version or selection state changes" update.txt) ]]
 then
