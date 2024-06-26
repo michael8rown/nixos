@@ -1,0 +1,65 @@
+#!/run/current-system/sw/bin/bash
+set -e -o pipefail
+
+if [[ ! "$1" ]]
+then
+  echo "You must indicate 'list' or 'delete'"
+  echo "Example:"
+  echo "    ./home list"
+  echo "    ./home delete 55"
+  exit
+fi
+
+username=$(whoami)
+
+current=`ls -al /home/${username}/.local/state/nix/profiles/ | grep "home-manager " | sed -E "s/^.+home\-manager\-([0-9]+)\-.*$/\1/g"`
+list=`ls -al /home/${username}/.local/state/nix/profiles/ | grep "home-" | sed -E 's/.*home\-manager\-([0-9]+)\-.*/\1/' | sort | uniq`
+
+sudo rm -f /tmp/home-list.txt
+
+declare -a arr=($list)
+	#declare -a gens=()
+for i in "${arr[@]}"
+do
+  if [[  ${i} == ${current} ]]
+  then
+    echo -E "  ${i} (current)" >> /tmp/home-list.txt
+  else
+    echo -E "  ${i} " >> /tmp/home-list.txt
+  fi
+done
+
+if [ $1 == "list" ]
+then
+  echo "Home-manager generations:"
+  cat /tmp/home-list.txt
+  exit
+elif [ $1 == "delete" ]
+then
+  if [ ! "$2" ]
+  then
+    echo "You must indiacte which home-manager generation to delete"
+    echo "Example:"
+    echo "    ./home delete 33"
+    exit
+  else
+    if [[ ! $(cat /tmp/home-list.txt | grep -E " ${2} ") ]]
+    then
+      echo "Home-manager generation ${2} does not exist! Aborting"
+      exit
+    elif [[ $(cat /tmp/home-list.txt | grep -E " ${2} " | grep "current") ]]
+    then
+      echo "Home-manager generation ${2} is the current running generation! Aborting"
+      exit
+    fi
+    echo "You've chosen to delete home-manager generation $2"
+    read -p "Proceed? (y/N) " proceed
+    if [[ "$proceed" =~ [Yy] ]]
+    then
+      echo "Deleting home-manager generation $2"
+      rm /home/${username}/.local/state/nix/profiles/home-manager-${2}-link
+    else
+      echo "Quitting"
+    fi
+  fi
+fi

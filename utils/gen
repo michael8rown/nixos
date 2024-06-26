@@ -1,25 +1,20 @@
 #!/run/current-system/sw/bin/bash
-
-if [ `id -u` -ne 0 ]
-then
-  echo Please run this script as root or using sudo!
-  exit
-fi
+set -e -o pipefail
 
 if [[ ! "$1" ]]
 then
   echo "You must indicate 'list' or 'delete'"
   echo "Example:"
-  echo "    sudo ./gen list"
-  echo "    sudo ./gen delete 55"
+  echo "    ./gen list"
+  echo "    ./gen delete 55"
   exit
 fi
 
-booted=`cat /proc/cmdline | sed -n 's/^.*init=\(.*\)\/init.*$/\1/p'`
+booted=`sudo cat /proc/cmdline | sed -n 's/^.*init=\(.*\)\/init.*$/\1/p'`
 current=`ls -al /nix/var/nix/profiles/ | grep $booted | sed -E 's/.*system\-([0-9]+)\-.*/\1/'`
 list=`ls -al /nix/var/nix/profiles/ | grep "system-" | sed -E 's/.*system\-([0-9]+)\-.*/\1/' | sort | uniq`
 
-rm -f /tmp/gen-list.txt
+sudo rm -f /tmp/gen-list.txt
 
 declare -a arr=($list)
 	#declare -a gens=()
@@ -61,17 +56,10 @@ then
     if [[ "$proceed" =~ [Yy] ]]
     then
       echo "Deleting generation $2"
-      rm /nix/var/nix/profiles/system-${2}-link
-#      nix-env --profile /nix/var/nix/profiles/system --delete-generations "$2"
+      sudo rm /nix/var/nix/profiles/system-${2}-link
     else
       echo "Quitting"
     fi
   fi
 fi
-
-#n=1
-#for arg in "$@"; do
-#  echo "arg $n: $arg"
-#  ((n++))
-#done
 

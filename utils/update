@@ -1,14 +1,20 @@
 #!/run/current-system/sw/bin/bash
 set -e -o pipefail
 
-/run/current-system/sw/bin/nixos-rebuild build --flake /etc/nixos/.
+/run/current-system/sw/bin/nix flake update /etc/nixos/.
+
 sleep 1
 
-/run/current-system/sw/bin/nvd diff /run/current-system /result > /update.txt
+/run/current-system/sw/bin/nixos-rebuild build --flake /etc/nixos/.
 
-if [[ $(/run/current-system/sw/bin/grep "No version or selection state changes" update.txt) ]]
+sleep 1
+
+/run/current-system/sw/bin/nix store diff-closures /run/current-system /result > /update.txt
+
+if [ ! -s /update.txt ]
 then
   message=`echo "System is up-to-date! Nothing to do!"`
+  /run/current-system/sw/bin/rm /update.txt
 else
   echo "The following updates are available:"
   cat /update.txt
@@ -20,19 +26,24 @@ else
     echo "Updating the system ..."
     /run/current-system/sw/bin/nixos-rebuild switch --flake /etc/nixos/.
   fi
+
+  sleep .3
+
+  /run/current-system/sw/bin/chown VAR_USERNAME:users /update.txt
+
+  sleep .3
+
+  /run/current-system/sw/bin/mv /update.txt /home/VAR_USERNAME/update.txt
+
 fi
+
 sleep .3
 
 /run/current-system/sw/bin/rm /result
+
 sleep .3
 
 /run/current-system/sw/bin/nix-collect-garbage
-sleep .3
-
-/run/current-system/sw/bin/chown VAR_USERNAME:users /update.txt
-sleep .3
-
-/run/current-system/sw/bin/mv /update.txt /home/VAR_USERNAME/update.txt
 
 echo
 echo ${message}
