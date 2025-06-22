@@ -50,10 +50,15 @@ nano setup.sh
 nix-channel --remove nixos
 nix-channel --update
 # Install system from the flake
-nixos-install --flake .#hostname
+nixos-install --flake .#VAR_HOSTNAME
 # nixos-install --flake requires you to identify a hostname
-# be sure to include it here
-# nixos-rebuild later does not require it
+# be sure to include it here (whatever you've set VAR_HOSTNAME
+# at below); nixos-rebuild later does not require it
+
+# Don't forget to create a password for your username
+# otherwise you'll need to log in to the newly
+# installed system as root to set it later
+nixos-enter --root /mnt -c 'passwd VAR_USERNAME'
 ```
 
 ### Variables
