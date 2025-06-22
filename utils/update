@@ -1,7 +1,7 @@
 #!/run/current-system/sw/bin/bash
 set -e -o pipefail
 
-/run/current-system/sw/bin/nix flake update /etc/nixos/.
+/run/current-system/sw/bin/nix flake update --flake /etc/nixos/.
 
 sleep 1
 
