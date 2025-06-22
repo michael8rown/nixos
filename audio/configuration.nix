@@ -148,6 +148,7 @@
     nvd
     wireguard-tools
     efibootmgr
+    pciutils
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
