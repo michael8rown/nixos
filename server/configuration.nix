@@ -211,12 +211,12 @@ in
 
   environment.gnome.excludePackages = with pkgs; [
     gnome-tour
-    gnome.gnome-music
+    gnome-music
     epiphany # web browser
-    gnome.tali # poker game
-    gnome.iagno # go game
-    gnome.hitori # sudoku game
-    gnome.atomix # puzzle game
+    tali # poker game
+    iagno # go game
+    hitori # sudoku game
+    atomix # puzzle game
   ];
 
   programs.gnome-terminal.enable = true;
@@ -236,21 +236,21 @@ in
     apacheHttpd
     msmtp
     whitesur-icon-theme
-    gnome.cheese # webcam tool
-    gnome.gnome-terminal
+    cheese # webcam tool
+    gnome-terminal
     gnome-photos
-    gnome.eog
+    eog
     gedit # text editor
-    gnome.geary # email reader
+    geary # email reader
     evince # document viewer
     libvirt
     gparted
-    gnome.gnome-characters
-    gnome.totem # video player
-    gnome.gnome-tweaks
-    gnome.gnome-themes-extra # for Adwaita-dark theme
+    gnome-characters
+    totem # video player
+    gnome-tweaks
+    gnome-themes-extra # for Adwaita-dark theme
     gnome-browser-connector
-    gnome.gnome-settings-daemon43
+    gnome-settings-daemon46
     gnomeExtensions.dash-to-dock
     gnomeExtensions.move-clock
     gnomeExtensions.logo-menu
@@ -352,25 +352,27 @@ in
       enable = true;
       securityType = "user";
       openFirewall = true;
-      extraConfig = ''
-        workgroup = WORKGROUP
-        server string = smbnix
-        netbios name = smbnix
-        server role = standalone server
-        security = user 
-        follow symlinks = yes
-        wide links = yes
-        unix extensions = no
-        max log size = 50
+      settings = {
+		global = {
+        "workgroup" = "WORKGROUP";
+        "server string" = "smbnix";
+        "netbios name" = "smbnix";
+        "server role" = "standalone server";
+        "security" = "user";
+        "follow symlinks" = "yes";
+        "wide links" = "yes";
+        "unix extensions" = "no";
+        "max log size" = "50";
         #use sendfile = yes
         #max protocol = smb2
         # note: localhost is the ipv6 localhost ::1
-        hosts allow = 192.168.1. 10.0. 127. localhost
-        hosts deny = 0.0.0.0/0
-        dns proxy = no 
-        guest account = nobody
-        map to guest = bad user
-      '';
+        "hosts allow" = "192.168.1. 10.0. 127. localhost";
+        "hosts deny" = "0.0.0.0/0";
+        "dns proxy" = "no";
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
+      	};
+	  };
       shares = {
         #public = {
         #  path = "/mnt/Shares/Public";

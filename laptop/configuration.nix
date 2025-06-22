@@ -180,12 +180,12 @@
 
   environment.gnome.excludePackages = with pkgs; [
     gnome-tour
-    gnome.gnome-music
+    gnome-music
     epiphany # web browser
-    gnome.tali # poker game
-    gnome.iagno # go game
-    gnome.hitori # sudoku game
-    gnome.atomix # puzzle game
+    tali # poker game
+    iagno # go game
+    hitori # sudoku game
+    atomix # puzzle game
   ];
 
   programs.gnome-terminal.enable = true;
@@ -201,21 +201,21 @@
     neofetch
     libvirt
     whitesur-icon-theme
-    gnome.cheese # webcam tool
-    gnome.gnome-terminal
+    cheese # webcam tool
+    gnome-terminal
     gnome-photos
-    gnome.eog
+    eog
     gedit # text editor
-    gnome.geary # email reader
+    geary # email reader
     evince # document viewer
     gparted
-    gnome.gnome-characters
-    gnome.totem # video player
-    gnome.gnome-tweaks
-    gnome.gnome-boxes
-    gnome.gnome-themes-extra # for Adwaita-dark theme
+    gnome-characters
+    totem # video player
+    gnome-tweaks
+    gnome-boxes
+    gnome-themes-extra # for Adwaita-dark theme
     gnome-browser-connector
-    gnome.gnome-settings-daemon43
+    gnome-settings-daemon46
     gnomeExtensions.dash-to-dock
     gnomeExtensions.move-clock
     gnomeExtensions.logo-menu
