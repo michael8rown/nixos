@@ -28,8 +28,9 @@
 
 
   musnix.enable = true;
-  musnix.kernel.realtime = true;
+  musnix.kernel.realtime = false;
   musnix.rtirq.enable = true;
+  musnix.soundcardPciId = ""; # run `lspci | grep -i audio` to find the card value, such as "00:1b.0"
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
