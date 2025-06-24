@@ -1,180 +1,179 @@
 { config, pkgs, systemSettings, ... }:
 
 {
-  # TODO please change the username & home direcotry to your own
-  home.username = systemSettings.username;
-  home.homeDirectory = "/home/"+systemSettings.username;
+	# TODO please change the username & home direcotry to your own
+	home.username = systemSettings.username;
+	home.homeDirectory = "/home/"+systemSettings.username;
 
-  gtk = {
-    enable = true;
+	gtk = {
+		enable = true;
 
-    theme = {
-      name = "Adwaita-dark";
-      package = pkgs.gnome-themes-extra;
-    };
+		theme = {
+			name = "Adwaita-dark";
+			package = pkgs.gnome-themes-extra;
+		};
 
-    iconTheme = {
-      name = "WhiteSur-dark";
-      package = pkgs.whitesur-icon-theme;
-    };
+		iconTheme = {
+			name = "WhiteSur-dark";
+			package = pkgs.whitesur-icon-theme;
+		};
 
-#    gtk3.extraConfig = {
-#      settings = ''
-#        gtk-application-prefer-dark-theme=1
-#      '';
-#    };
+#		gtk3.extraConfig = {
+#			settings = ''
+#				gtk-application-prefer-dark-theme=1
+#			'';
+#		};
 
-#    gtk4.extraConfig = {
-#      settings = ''
-#        gtk-application-prefer-dark-theme=1
-#      '';
-#    };
+#		gtk4.extraConfig = {
+#			settings = ''
+#				gtk-application-prefer-dark-theme=1
+#			'';
+#		};
 
 
 # This makes dash-to-dock the blue color:
 # /org/gtk/gtk4/settings/color-chooser/selected-color
-#  (true, 0.30980393290519714, 0.3960784375667572, 0.51764708757400513, 1.0)
+#	(true, 0.30980393290519714, 0.3960784375667572, 0.51764708757400513, 1.0)
 
+		gtk3.extraConfig = {
+			gtk-application-prefer-dark-theme = 1;
+		};
 
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
+		gtk4.extraConfig = {
+			gtk-application-prefer-dark-theme = 1;
+		};
 
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
+	};
 
-  };
+	dconf = {
+		enable = true;
+		settings = {
 
-  dconf = {
-    enable = true;
-    settings = {
+			"org/gnome/gedit/preferences/editor" = {
+				display-line-numbers = false;
+				wrap-mode = "none";
+				highlight-current-line = false;
+				bracket-matching = false;
+				use-default-font = false;
+				editor-font = "Monospace 12";
+			};
 
-      "org/gnome/gedit/preferences/editor" = {
-	display-line-numbers = false;
-	wrap-mode = "none";
-	highlight-current-line = false;
-	bracket-matching = false;
-	use-default-font = false;
-	editor-font = "Monospace 12";
-      };
+			"org/gnome/gedit/preferences/ui" = {
+				bottom-panel-visible = false;
+				side-panel-visible = false;
+				theme-variant = "dark";
+			};
 
-      "org/gnome/gedit/preferences/ui" = {
-	bottom-panel-visible = false;
-	side-panel-visible = false;
-	theme-variant = "dark";
-      };
+			"org/gnome/desktop/interface" = {
+				color-scheme = "prefer-dark";
+				clock-format = "12h";
+			};
 
-      "org/gnome/desktop/interface" = {
-        color-scheme = "prefer-dark";
-	clock-format = "12h";
-      };
+			"org/gnome/desktop/wm/preferences".button-layout = "appmenu:minimize,maximize,close";
 
-      "org/gnome/desktop/wm/preferences".button-layout = "appmenu:minimize,maximize,close";
+			"org/gnome/mutter" = {
+				edge-tiling = true;
+				dynamic-workspaces = true;
+				center-new-windows = true;
+			};
 
-      "org/gnome/mutter" = {
-	edge-tiling = true;
-	dynamic-workspaces = true;
-	center-new-windows = true;
-      };
+			"org/gnome/nautilus/preferences".show-image-thumbnails = "always";
 
-      "org/gnome/nautilus/preferences".show-image-thumbnails = "always";
+			"org/gnome/desktop/privacy".remember-recent-files = false;
 
-      "org/gnome/desktop/privacy".remember-recent-files = false;
+			"org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9" = {
+				default-size-rows = 27;
+				default-size-columns = 127;
+				use-system-font = false;
+				font = "JetBrains Mono 10";
+				scrollbar-policy = "never";
+			};
 
-      "org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9" = {
-        default-size-rows = 27;
-        default-size-columns = 127;
-	use-system-font = false;
-        font = "JetBrains Mono 10";
-        scrollbar-policy = "never";
-      };
+			"org/gnome/shell" = {
+				disable-user-extensions = false;
 
-      "org/gnome/shell" = {
-        disable-user-extensions = false;
+				# `gnome-extensions list` for a list
+				enabled-extensions = [
+					"Move_Clock@rmy.pobox.com"
+					"blur-my-shell@aunetx"
+					"dash-to-dock@micxgx.gmail.com"
+					"logomenu@aryan_k"
+				];
 
-        # `gnome-extensions list` for a list
-        enabled-extensions = [
-	  "Move_Clock@rmy.pobox.com"
-	  "blur-my-shell@aunetx"
-	  "dash-to-dock@micxgx.gmail.com"
-	  "logomenu@aryan_k"
-        ];
+				favorite-apps = [
+					"org.gnome.Nautilus.desktop"
+					"firefox.desktop"
+					"org.gnome.Terminal.desktop"
+					"org.gnome.gedit.desktop" 
+					"vlc.desktop"
+					"org.gnome.Rhythmbox3.desktop"
+					"gimp.desktop"
+					"org.gnome.tweaks.desktop"
+					"org.gnome.Settings.desktop"
+				];
 
-	favorite-apps = [
-	  "org.gnome.Nautilus.desktop"
-	  "firefox.desktop"
-	  "org.gnome.Terminal.desktop"
-	  "org.gnome.gedit.desktop" 
-	  "vlc.desktop"
-	  "org.gnome.Rhythmbox3.desktop"
-	  "gimp.desktop"
-	  "org.gnome.tweaks.desktop"
-	  "org.gnome.Settings.desktop"
-        ];
+			};
 
-      };
+			"org/gnome/shell/extensions/Logo-menu" = {
+				menu-button-icon-image = 18;
+				symbolic-icon = false;
+				show-power-options = true;
+				show-lockscreen = true;
+				hide-softwarecentre = true;
+			};
 
-      "org/gnome/shell/extensions/Logo-menu" = {
-	menu-button-icon-image = 18;
-	symbolic-icon = false;
-	show-power-options = true;
-	show-lockscreen = true;
-	hide-softwarecentre = true;
-      };
+			"org/gnome/shell/extensions/dash-to-dock" = {
+				dash-max-icon-size = 38;
+				transparency-mode = "FIXED";
+				custom-background-color = true;
+				background-color = "rgb(94,95,97)";
+				background-opacity = 0.90;
+				custom-theme-shrink = true;
+			};  
 
-      "org/gnome/shell/extensions/dash-to-dock" = {
-	dash-max-icon-size = 38;
-	transparency-mode = "FIXED";
-	custom-background-color = true;
-	background-color = "rgb(94,95,97)";
-	background-opacity = 0.90;
-        custom-theme-shrink = true;
-      };  
+		};
+	};
 
-    };
-  };
+	# Packages that should be installed to the user profile.
+	home.packages = with pkgs; [
 
-  # Packages that should be installed to the user profile.
-  home.packages = with pkgs; [
+	];
 
-  ];
+	programs.bash = {
+		enable = true;
+		enableCompletion = true;
+		# TODO add your custom bashrc here
+		bashrcExtra = ''
+			export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin"
 
-  programs.bash = {
-    enable = true;
-    enableCompletion = true;
-    # TODO add your custom bashrc here
-    bashrcExtra = ''
-      export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin"
+			# Provide a nice prompt if the terminal supports it.
+			if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
+				PROMPT_COLOR="1;31m"
+				((UID)) && PROMPT_COLOR="1;32m"
+				if [ -n "$INSIDE_EMACS" ]; then
+					# Emacs term mode doesn't support xterm title escape sequence (\e]0;)
+					PS1="\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
+				else
+					PS1="\[\033[$PROMPT_COLOR\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\\$\[\033[0m\] "
+				fi
+				if test "$TERM" = "xterm"; then
+					PS1="\[\033]2;\h:\u:\w\007\]$PS1"
+				fi
+			fi
+		'';
 
-      # Provide a nice prompt if the terminal supports it.
-      if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
-        PROMPT_COLOR="1;31m"
-        ((UID)) && PROMPT_COLOR="1;32m"
-        if [ -n "$INSIDE_EMACS" ]; then
-          # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
-          PS1="\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
-        else
-          PS1="\[\033[$PROMPT_COLOR\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\\$\[\033[0m\] "
-        fi
-        if test "$TERM" = "xterm"; then
-          PS1="\[\033]2;\h:\u:\w\007\]$PS1"
-        fi
-      fi
-    '';
+	};
 
-  };
+	# This value determines the home Manager release that your
+	# configuration is compatible with. This helps avoid breakage
+	# when a new home Manager release introduces backwards
+	# incompatible changes.
+	#
+	# You can update home Manager without changing this value. See
+	# the home Manager release notes for a list of state version
+	# changes in each release.
+	home.stateVersion = "23.11";
 
-  # This value determines the home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new home Manager release introduces backwards
-  # incompatible changes.
-  #
-  # You can update home Manager without changing this value. See
-  # the home Manager release notes for a list of state version
-  # changes in each release.
-  home.stateVersion = "23.11";
-
-  # Let home Manager install and manage itself.
-  programs.home-manager.enable = true;
+	# Let home Manager install and manage itself.
+	programs.home-manager.enable = true;
 }
