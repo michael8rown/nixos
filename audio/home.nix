@@ -10,6 +10,14 @@
 
   ];
 
+  programs.nano = {
+	nanorc = ''
+	  set nowrap
+	  set tabsize 2
+	  # include  usr share nano *.nanorc
+	'';
+  };
+
   programs.bash = {
     enable = true;
     enableCompletion = true;
