@@ -161,8 +161,8 @@ in
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb.layout = "us";
+    xkb.variant = "";
   };
 
   # Enable CUPS to print documents.
@@ -170,7 +170,7 @@ in
 
   # Enable sound with pipewire.
   #sound.enable = true;
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -191,7 +191,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${systemSettings.username} = {
     isNormalUser = true;
-    initialPassword = "password";
+    # initialPassword = "password";
     description = systemSettings.username;
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
