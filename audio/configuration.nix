@@ -108,7 +108,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${systemSettings.username} = {
     isNormalUser = true;
-    initialPassword = "password";
+    # initialPassword = "password"; # prefer the final step in installation, running `nixos-enter --root /mnt -c ...` instead
     description = systemSettings.username;
     extraGroups = [ "networkmanager" "wheel" "audio" ];
     packages = with pkgs; [
