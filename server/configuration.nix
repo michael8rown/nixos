@@ -28,10 +28,11 @@ let
 		CryptOpenSSLBignum
 		CryptOpenSSLRSA
 		DBDMock
-		DBDmysql
+		DBDMariaDB
 		DBI
 		DBIxClassSchemaLoader
 		DataICal
+		DataDump
 		DateCalc
 		DateManip
 		DateTime
@@ -44,10 +45,13 @@ let
 		EmailMessageID
 		EmailSender
 		EmailStuffer
+		Encode
 		ExceptionClass
 		FileSlurp
 		FontTTF
 		GD
+		ListUtilsBy
+		TemplateToolkit
 		# and the rest of your modules
 	]);
 in
@@ -98,10 +102,10 @@ in
 	#      mode = "0440";
 	#    };
 	#  };
-	    # Private key of the SSH key pair. This is the other pair of what was supplied
-	    # in `secrets.nix`.
-	    #
-	    # This tells `agenix` where to look for the private key.
+	# Private key of the SSH key pair. This is the other pair of what was supplied
+	# in `secrets.nix`.
+	#
+	# This tells `agenix` where to look for the private key.
 	#  identityPaths = [ "/home/"+systemSettings.username+"/.ssh/id_ed25519" ];
 	#};
 
@@ -263,6 +267,7 @@ in
 #    (callPackage <agenix/pkgs/agenix.nix> {})
 		wireguard-tools
 		efibootmgr
+		pciutils
 ];
 
 	# Some programs need SUID wrappers, can be configured further or are
@@ -279,7 +284,7 @@ in
 		accounts = {
 			default = {
 				auth = true;
-	tls = true;
+				tls = true;
 				tls_starttls = false;
 				from = systemSettings.msmtp_email;
 				host = systemSettings.msmtp_server;
