@@ -65,19 +65,19 @@
 		pulseaudio.enable = false;
 		desktopManager.plasma6.enable = true;
 		displayManager = {
-			defaultSession = "plasmax11";
+			defaultSession = "plasma";
 			sddm = {
 	    enable = true;
-	    wayland.enable = false;
+	    wayland.enable = true;
 			};
 		};
 
 		# Configure keymap in X11
-		xserver = {
-			enable = true;
-			xkb.layout = "us";
-			xkb.variant = "";
-		};
+#		xserver = {
+#			enable = true;
+#			xkb.layout = "us";
+#			xkb.variant = "";
+#		};
 
 		# Enable CUPS to print documents.
 		printing.enable = true;
@@ -124,7 +124,7 @@
 		git
 		ardour
 		qjackctl
-		neofetch
+		fastfetch
 		kdePackages.ksystemlog
 		kdePackages.sddm-kcm
 		kdePackages.isoimagewriter
@@ -137,6 +137,8 @@
 		wireguard-tools
 		efibootmgr
 		pciutils
+		ghostty
+		bat
 	];
 
 	# Some programs need SUID wrappers, can be configured further or are

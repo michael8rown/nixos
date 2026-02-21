@@ -3,6 +3,7 @@
 
 	inputs = {
 			nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+#			musnix.url = "github:musnix/musnix";
 			musnix.url = "github:musnix/musnix";
 			home-manager = {
 				url = "github:nix-community/home-manager/release-25.05";
@@ -21,7 +22,7 @@
 
 		systemSettings = {
 			hostname 	 = "VAR_HOSTNAME";		# the name of your machine
-			profile 	 = "VAR_PROFILE";		# the profile you're installing, laptop or server
+			profile 	 = "VAR_PROFILE";		# the profile you're installing: gnome, kde, audio, or server
 			username 	 = "VAR_USERNAME";		# your username
 			fullname 	 = "VAR_YOUR_NAME";		# your full name, such as "John Smith"
 			msmtp_email  = "VAR_MSMTP_EMAIL";	# email address used for msmtp

@@ -13,7 +13,7 @@ arr+=(
   ["VAR_SSH_PORT"]=####				# the port you use for `sshd`
   ["VAR_HTTP_ROOT"]=/http/root			# the root directory of your webserver, e.g., `/var/www` or `/srv/httpd`
   ["VAR_HOSTNAME"]=hostname			# the name of your machine
-  ["VAR_PROFILE"]=profile			# the profile you're installing, laptop or server
+  ["VAR_PROFILE"]=profile			# the profile you're installing: gnome, kde, audio, or server
 )
 
 for key in ${!arr[@]}; do

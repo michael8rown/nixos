@@ -156,18 +156,18 @@ in
 	};
 
 	# Enable the X11 windowing system.
-	services.xserver.enable = true;
+#	services.xserver.enable = true;
 
 	# Enable the GNOME Desktop Environment.
-	services.xserver.displayManager.gdm.enable = true;
-	services.xserver.displayManager.gdm.wayland = false;
-	services.xserver.desktopManager.gnome.enable = true;
+#	services.xserver.displayManager.gdm.enable = true;
+#	services.xserver.displayManager.gdm.wayland = false;
+#	services.xserver.desktopManager.gnome.enable = true;
 
 	# Configure keymap in X11
-	services.xserver = {
-		xkb.layout = "us";
-		xkb.variant = "";
-	};
+#	services.xserver = {
+#		xkb.layout = "us";
+#		xkb.variant = "";
+#	};
 
 	# Enable CUPS to print documents.
 	services.printing.enable = true;
@@ -200,11 +200,11 @@ in
 		extraGroups = [ "networkmanager" "wheel" ];
 		packages = with pkgs; [
 			firefox
-			jetbrains-mono
-			vlc
-			rhythmbox
+#			jetbrains-mono
+#			vlc
+#			rhythmbox
 			chromium
-			gimp
+#			gimp
 		#  zoom-us
 		#  thunderbird
 		];
@@ -213,17 +213,17 @@ in
 	# List packages installed in system profile. To search, run:
 	# $ nix search wget
 
-	environment.gnome.excludePackages = with pkgs; [
-		gnome-tour
-		gnome-music
-		epiphany # web browser
-		tali # poker game
-		iagno # go game
-		hitori # sudoku game
-		atomix # puzzle game
-	];
+#	environment.gnome.excludePackages = with pkgs; [
+#		gnome-tour
+#		gnome-music
+#		epiphany # web browser
+#		tali # poker game
+#		iagno # go game
+#		hitori # sudoku game
+#		atomix # puzzle game
+#	];
 
-	programs.gnome-terminal.enable = true;
+#	programs.gnome-terminal.enable = true;
 
 	#environment.systemPackages = [ (pkgs.callPackage <agenix/pkgs/agenix.nix> {}) ];
 
@@ -231,34 +231,14 @@ in
 	#  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
 	#  wget
 		microcodeAmd
-		micro
 		wget
 		git
-		neofetch
+		fastfetch
 		php
 		mariadb
 		apacheHttpd
 		msmtp
-		whitesur-icon-theme
-		cheese # webcam tool
-		gnome-terminal
-		gnome-photos
-		eog
-		gedit # text editor
-		geary # email reader
-		evince # document viewer
 		libvirt
-		gparted
-		gnome-characters
-		totem # video player
-		gnome-tweaks
-		gnome-themes-extra # for Adwaita-dark theme
-		gnome-browser-connector
-		gnome-settings-daemon46
-		gnomeExtensions.dash-to-dock
-		gnomeExtensions.move-clock
-		gnomeExtensions.logo-menu
-		gnomeExtensions.blur-my-shell
 		parted
 		nvd
 		perlEnv

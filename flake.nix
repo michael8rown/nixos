@@ -21,7 +21,7 @@
 
 		systemSettings = {
 			hostname 	 = "VAR_HOSTNAME";		# the name of your machine
-			profile 	 = "VAR_PROFILE";		# the profile you're installing, laptop or server
+			profile 	 = "VAR_PROFILE";		# the profile you're installing: gnome, kde, audio, or server
 			username 	 = "VAR_USERNAME";		# your username
 			fullname 	 = "VAR_YOUR_NAME";		# your full name, such as "John Smith"
 			msmtp_email  = "VAR_MSMTP_EMAIL";	# email address used for msmtp
@@ -48,7 +48,7 @@
 						home-manager.useGlobalPkgs = true;
 						home-manager.useUserPackages = true;
 						home-manager.users.${systemSettings.username} = {
-							imports = [ ./home.nix ];
+							imports = [ (./. + ("/" + systemSettings.profile) + "/home.nix") ];
 						};
 					}
 				]; 
