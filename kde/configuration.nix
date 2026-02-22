@@ -28,10 +28,6 @@
 			#./iphone.nix
 		];
 
-#	iphone stuff doesn't work
-#	iphone.enable = true;
-#	iphone.user = systemSettings.username;
-
 	# Use the systemd-boot EFI boot loader.
 	boot.loader.systemd-boot.enable = true;
 	boot.loader.efi.canTouchEfiVariables = true;
@@ -106,22 +102,16 @@
 		LC_TIME = "en_US.UTF-8";
 	};
 
-	# Enable the X11 windowing system.
-	services.xserver.enable = true;
-
-	# Enable the GNOME Desktop Environment.
-	services.xserver.displayManager.gdm.enable = true;
-	services.xserver.displayManager.gdm.wayland = false;
-	services.xserver.desktopManager.gnome.enable = true;
-	
-	# Configure keymap in X11
-	services.xserver = {
-		xkb.layout = "us";
-		xkb.variant = "";
+	services.desktopManager.plasma6.enable = true;
+	services.displayManager = {
+		defaultSession = "plasma" ;
+		sddm.enable = true;
+		sddm.wayland.enable = true;
+		sddm.settings.General.DisplayServer = "wayland";
 	};
 
 	# Enable CUPS to print documents.
-#	services.printing.enable = true;
+	services.printing.enable = true;
 
 	# Enable sound.
 	# sound.enable = true;
@@ -155,16 +145,15 @@
 		isNormalUser = true;
 		#initialPassword = "password";
 		description = systemSettings.username;
-		extraGroups = [ "networkmanager" "wheel" ];
+		extraGroups = [ "networkmanager" "wheel" "audio" ];
 		packages = with pkgs; [
 			firefox
 			jetbrains-mono
 			vlc
-			rhythmbox
 			chromium
 			gimp
-		#  zoom-us
-		#  thunderbird
+			#zoom-us
+			thunderbird
 		];
 	};
 
@@ -178,48 +167,17 @@
 	#   ];
 	# };
 
-	environment.gnome.excludePackages = with pkgs; [
-		gnome-tour
-		gnome-music
-		epiphany # web browser
-		tali # poker game
-		iagno # go game
-		hitori # sudoku game
-		atomix # puzzle game
-	];
-
-	programs.gnome-terminal.enable = true;
-
 #  environment.systemPackages = [ (pkgs.callPackage <agenix/pkgs/agenix.nix> {}) ];
 
 	environment.systemPackages = with pkgs; [
-	#  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-	#  wget
 		microcodeAmd
 		wget
 		git
-		neofetch
+		ghostty
+		fastfetch
+		bat
 		libvirt
-		whitesur-icon-theme
-		cheese # webcam tool
-		gnome-terminal
-		gnome-photos
-		eog
-		gedit # text editor
-		geary # email reader
-		evince # document viewer
 		gparted
-		gnome-characters
-		totem # video player
-		gnome-tweaks
-		gnome-boxes
-		gnome-themes-extra # for Adwaita-dark theme
-		gnome-browser-connector
-		gnome-settings-daemon46
-		gnomeExtensions.dash-to-dock
-		gnomeExtensions.move-clock
-		gnomeExtensions.logo-menu
-		gnomeExtensions.blur-my-shell
 		parted
 		nvd
 		zip
@@ -252,6 +210,13 @@
 	#   enable = true;
 	#   enableSSHSupport = true;
 	# };
+       
+	programs.nano = {
+		nanorc = ''
+			set nowrap
+			set tabsize 4
+		'';
+	};
 
 	# List services that you want to enable:
 

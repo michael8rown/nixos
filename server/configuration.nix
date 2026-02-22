@@ -155,39 +155,25 @@ in
 		LC_TIME = "en_US.UTF-8";
 	};
 
-	# Enable the X11 windowing system.
-#	services.xserver.enable = true;
-
-	# Enable the GNOME Desktop Environment.
-#	services.xserver.displayManager.gdm.enable = true;
-#	services.xserver.displayManager.gdm.wayland = false;
-#	services.xserver.desktopManager.gnome.enable = true;
-
-	# Configure keymap in X11
-#	services.xserver = {
-#		xkb.layout = "us";
-#		xkb.variant = "";
-#	};
-
 	# Enable CUPS to print documents.
-	services.printing.enable = true;
+	#services.printing.enable = true;
 
 	# Enable sound with pipewire.
 	#sound.enable = true;
-	services.pulseaudio.enable = false;
-	security.rtkit.enable = true;
-	services.pipewire = {
-		enable = true;
-		alsa.enable = true;
-		alsa.support32Bit = true;
-		pulse.enable = true;
+#	services.pulseaudio.enable = false;
+#	security.rtkit.enable = true;
+#	services.pipewire = {
+#		enable = true;
+#		alsa.enable = true;
+#		alsa.support32Bit = true;
+#		pulse.enable = true;
 		# If you want to use JACK applications, uncomment this
 		#jack.enable = true;
 
 		# use the example session manager (no others are packaged yet so this is enabled by default,
 		# no need to redefine it in your config for now)
 		#media-session.enable = true;
-	};
+#	};
 
 	# Enable touchpad support (enabled default in most desktopManager).
 	# services.xserver.libinput.enable = true;
@@ -198,16 +184,12 @@ in
 		# initialPassword = "password";
 		description = systemSettings.username;
 		extraGroups = [ "networkmanager" "wheel" ];
-		packages = with pkgs; [
-			firefox
-#			jetbrains-mono
-#			vlc
-#			rhythmbox
-			chromium
-#			gimp
+#		packages = with pkgs; [
+#			firefox
+#			chromium
 		#  zoom-us
 		#  thunderbird
-		];
+#		];
 	};
 
 	# List packages installed in system profile. To search, run:
@@ -228,13 +210,23 @@ in
 	#environment.systemPackages = [ (pkgs.callPackage <agenix/pkgs/agenix.nix> {}) ];
 
 	environment.systemPackages = with pkgs; [
-	#  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-	#  wget
+		firefox
+		chromium
 		microcodeAmd
 		wget
 		git
 		fastfetch
 		php
+		python3
+		python312Packages.selenium
+		python312Packages.requests
+		python312Packages.beautifulsoup4
+		uv
+		pyenv
+#		firewalld
+		chromedriver
+		undetected-chromedriver
+		bat
 		mariadb
 		apacheHttpd
 		msmtp
@@ -258,6 +250,12 @@ in
 	#   enableSSHSupport = true;
 	# };
 
+	programs.nano = {
+		nanorc = ''
+			set nowrap
+			set tabsize 4
+		'';
+	};
 
 	programs.msmtp = {
 		enable = true;
@@ -279,6 +277,10 @@ in
 	# List services that you want to enable:
 
 	services = {
+
+#		firewalld = {
+#			enable = true;
+#		};
 
 		# SSHD
 		openssh = {
@@ -335,7 +337,7 @@ in
 
 		samba = {
 			enable = true;
-			securityType = "user";
+#			securityType = "user";
 			openFirewall = true;
 			settings = {
 				global = {
@@ -357,18 +359,6 @@ in
 					"guest account" = "nobody";
 					"map to guest" = "bad user";
 				};
-			};
-			shares = {
-				#public = {
-				#  path = "/mnt/Shares/Public";
-				#  browseable = "yes";
-				#  "read only" = "no";
-				#  "guest ok" = "yes";
-				#  "create mask" = "0644";
-				#  "directory mask" = "0755";
-				#  "force user" = "username";
-				#  "force group" = "groupname";
-				#};
 				homes = {
 					comment = "Home Directories";
 					browseable = "no";
@@ -386,6 +376,34 @@ in
 					"force group" = "users";
 				};
 			};
+#			shares = {
+				#public = {
+				#  path = "/mnt/Shares/Public";
+				#  browseable = "yes";
+				#  "read only" = "no";
+				#  "guest ok" = "yes";
+				#  "create mask" = "0644";
+				#  "directory mask" = "0755";
+				#  "force user" = "username";
+				#  "force group" = "groupname";
+				#};
+#				homes = {
+#					comment = "Home Directories";
+#					browseable = "no";
+#					writable = "yes";
+#				};
+#				nixshare = {
+#					path = "/home/"+systemSettings.username;
+#					comment = "NixOS Samba share";
+#					browseable = "yes";
+#					"read only" = "no";
+#					"guest ok" = "no";
+#					"create mask" = "0644";
+#					"directory mask" = "0755";
+#					"force user" = systemSettings.username;
+#					"force group" = "users";
+#				};
+#			};
 		};
 
 	}; # end of services
