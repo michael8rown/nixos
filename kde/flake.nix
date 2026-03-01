@@ -1,20 +1,17 @@
 {
-	description = "Mike's Flake";
+	description = "KDE Plasma Flake";
 
 	inputs =
 		{
 			nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-			home-manager = {
-				url = "github:nix-community/home-manager/release-25.05";
-				inputs.nixpkgs.follows = "nixpkgs";
-			};
 		};
 
-	outputs = inputs @ { self, nixpkgs, home-manager, ... }:
+	outputs = inputs @ { self, nixpkgs, ... }:
 	let
 		system = "x86_64-linux";
 		pkgs = import nixpkgs {
 			inherit system;
+			overlays = [ ];
 			config.allowUnfree = true;
 		};
 		lib = nixpkgs.lib;
@@ -39,19 +36,7 @@
 				specialArgs = {
 					inherit systemSettings;
 				};
-				modules = [ 
-					(./. + ("/" + systemSettings.profile) + "/configuration.nix")
-					home-manager.nixosModules.home-manager {
-						home-manager.extraSpecialArgs = {
-							inherit systemSettings;
-						};
-						home-manager.useGlobalPkgs = true;
-						home-manager.useUserPackages = true;
-						home-manager.users.${systemSettings.username} = {
-							imports = [ (./. + ("/" + systemSettings.profile) + "/home.nix") ];
-						};
-					}
-				]; 
+				modules = [ (./. + ("/" + systemSettings.profile) + "/configuration.nix") ]; 
 			};
 		};
 	};
