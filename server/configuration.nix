@@ -238,11 +238,11 @@ in
 		jq
 		samba
 #    (callPackage <agenix/pkgs/agenix.nix> {})
-		wireguard-tools
 		efibootmgr
 		pciutils
 		bc
 		sshpass
+		fail2ban
 ];
 
 	# Some programs need SUID wrappers, can be configured further or are
