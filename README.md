@@ -2,9 +2,9 @@
 
 Configurations and miscellaneous files for my home server and my laptops.
 
-## NOTE:
+### NOTE:
 
-These steps are not used exactly this way anymore. Each different profile will get its own installation instructions. The only installation instructions written so far are those for the `server` profile.
+==These steps are not used exactly this way anymore. Each different profile will get its own installation instructions. The only installation instructions written so far are those for the `server` profile.==
 
 ### Installation instructions
 
