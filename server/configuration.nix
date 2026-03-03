@@ -56,6 +56,25 @@ let
 	]);
 in
 {
+
+  fileSystems."/home" =
+    { device = "/mnt/storage/home";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+  fileSystems."/var/www" =
+    { device = "/mnt/storage/www";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+  fileSystems."/var/lib/libvirt/images" =
+    { device = "/mnt/storage/images";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
 	nix = {
 		settings = {
 			experimental-features = [ "nix-command" "flakes" ];
@@ -124,7 +143,7 @@ in
 	#  system.autoUpgrade.enable = true;
 	#  system.autoUpgrade.allowReboot = false;
 
-	networking.hostName = systemSettings.hostname; # Define your hostname.
+	# Enable networking
 	# networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 	# networking.interfaces.enp4s0.ipv4.addresses = [ { address = "10.11.12.122"; prefixLength = 24; } ];
 	# networking.defaultGateway = "10.11.12.1";
@@ -135,29 +154,46 @@ in
 	# networking.proxy.default = "http://user:password@proxy:port/";
 	# networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-	# Enable networking
-	networking.networkmanager.enable = true;
+#	networking = {
+#		networkmanager.enable = true;
+#		hostName = systemSettings.hostname;
+#	};
+
+	networking = {
+		hostName = systemSettings.hostname; # Define your hostname.
+		networkmanager.enable = false;
+		useDHCP = false;
+		defaultGateway = "192.168.122.1";
+		bridges = {
+			"br0" = { interfaces = [ "enp1s0" ]; };
+		};
+		interfaces.br0.ipv4.addresses = [ { address = "192.168.122.188"; prefixLength = 24; } ];
+	};
+
+#	virtualisation.libvirtd.enable = true;
+#	virtualisation.libvirtd.allowedBridges = [ "br0" ];
 
 	# Set your time zone.
 	time.timeZone = "America/Denver";
 
 	# Select internationalisation properties.
-	i18n.defaultLocale = "en_US.UTF-8";
-
-	i18n.extraLocaleSettings = {
-		LC_ADDRESS = "en_US.UTF-8";
-		LC_IDENTIFICATION = "en_US.UTF-8";
-		LC_MEASUREMENT = "en_US.UTF-8";
-		LC_MONETARY = "en_US.UTF-8";
-		LC_NAME = "en_US.UTF-8";
-		LC_NUMERIC = "en_US.UTF-8";
-		LC_PAPER = "en_US.UTF-8";
-		LC_TELEPHONE = "en_US.UTF-8";
-		LC_TIME = "en_US.UTF-8";
+	i18n = {
+		defaultLocale = "en_US.UTF-8";
+		extraLocaleSettings = {
+			LC_ADDRESS = "en_US.UTF-8";
+			LC_IDENTIFICATION = "en_US.UTF-8";
+			LC_MEASUREMENT = "en_US.UTF-8";
+			LC_MONETARY = "en_US.UTF-8";
+			LC_NAME = "en_US.UTF-8";
+			LC_NUMERIC = "en_US.UTF-8";
+			LC_PAPER = "en_US.UTF-8";
+			LC_TELEPHONE = "en_US.UTF-8";
+			LC_TIME = "en_US.UTF-8";
+		};
 	};
 
 	# Enable CUPS to print documents.
-	#services.printing.enable = true;
+	services.printing.enable = true;
 
 	# Enable sound with pipewire.
 	#sound.enable = true;
@@ -184,36 +220,17 @@ in
 		isNormalUser = true;
 		# initialPassword = "password";
 		description = systemSettings.username;
-		extraGroups = [ "networkmanager" "wheel" ];
-#		packages = with pkgs; [
-#			firefox
-#			chromium
-		#  zoom-us
-		#  thunderbird
-#		];
+		extraGroups = [ "libvirtd" "wheel" ];
+#		packages = with pkgs; [		];
 	};
 
 	# List packages installed in system profile. To search, run:
 	# $ nix search wget
 
-#	environment.gnome.excludePackages = with pkgs; [
-#		gnome-tour
-#		gnome-music
-#		epiphany # web browser
-#		tali # poker game
-#		iagno # go game
-#		hitori # sudoku game
-#		atomix # puzzle game
-#	];
-
-#	programs.gnome-terminal.enable = true;
-
-	#environment.systemPackages = [ (pkgs.callPackage <agenix/pkgs/agenix.nix> {}) ];
-
 	environment.systemPackages = with pkgs; [
 		firefox
 		chromium
-		microcodeAmd
+		microcode-amd
 		wget
 		git
 		fastfetch
@@ -237,7 +254,7 @@ in
 		perlEnv
 		jq
 		samba
-#    (callPackage <agenix/pkgs/agenix.nix> {})
+#		(callPackage <agenix/pkgs/agenix.nix> {})
 		efibootmgr
 		pciutils
 		bc
@@ -276,14 +293,21 @@ in
 		};
 	};
 
-
 	# List services that you want to enable:
 
 	services = {
 
+		logind.settings.Login = {
+			HandleLidSwitch = "ignore";
+			HandleLidSwitchExternalPower = "ignore";
+			HandleLidSwitchDocked = "ignore";
+		};
+
 #		firewalld = {
 #			enable = true;
 #		};
+
+		resolved.enable = true;
 
 		# SSHD
 		openssh = {
@@ -301,12 +325,19 @@ in
 				; max filesize
 				upload_max_filesize = 20M
 				post_max_size = 20M
+				error_reporting = E_ALL & ~E_DEPRECATED
 			'';
 
 			virtualHosts.localhost = {
 				documentRoot = systemSettings.http_root;
 				extraConfig = ''
-					DirectoryIndex index.php index.html
+					<Directory "${systemSettings.http_root}">
+						DirectoryIndex index.php index.html
+						AllowOverride all
+						Options -Indexes +FollowSymLinks
+						Require all granted
+					</Directory>
+				
 					<Directory "${systemSettings.http_root}/cgi-bin">
 						AddHandler cgi-script .cgi .pl .py
 						AllowOverride None
