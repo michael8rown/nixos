@@ -58,9 +58,9 @@ Edit `setup.sh` to reflect the correct variables then run it.
 Move fileSystems entries for the binds from `hardware-configuration.nix` to `configuration.nix`, then begin the install.
 
 > [!WARNING]
-> Make sure you've unmounted the bind mounts otherwise installtion will fail.
+> Make sure you've unmounted the bind mounts otherwise installation will fail.
 >
-> Also, if you add anything to the VAR_USERNAME home directory while it's mounted at /mnt/home, you'll have to manually move that data to /mnt/storage/home before rebooting, otherwise it will be entirely lost.
+> Also, if you add anything to the VAR_USERNAME home directory while it's mounted at `/mnt/home`, you'll have to manually move that data to `/mnt/storage/home` before rebooting, otherwise it will be entirely lost.
 >
 > Don't ask me how I know.
 
