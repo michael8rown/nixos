@@ -23,7 +23,7 @@
 			hostname 	 = "VAR_HOSTNAME";		# the name of your machine
 			profile 	 = "VAR_PROFILE";		# the profile you're installing: gnome, kde, audio, or server
 			username 	 = "VAR_USERNAME";		# your username
-			fullname 	 = "VAR_YOUR_NAME";		# your full name, such as "John Smith"
+			fullname 	 = "VAR_FULL_NAME";		# your full name, such as "John Smith"
 			msmtp_email  = "VAR_MSMTP_EMAIL";	# email address used for msmtp
 			msmtp_server = "VAR_MSMTP_SERVER";	# the mailserver address, such as `mail.yourdomain.com`
 			email 		 = "VAR_EMAIL";			# your personal email address, such as `johnsmith@qooqle.com`

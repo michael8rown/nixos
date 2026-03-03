@@ -3,7 +3,7 @@
 Configurations and miscellaneous files for my home server and my laptops.
 
 > [!CAUTION]
-> These steps are not used exactly this way anymore. Each different profile will get its own installation instructions. The only installation instructions written so far are those for the `server` profile.==
+> These steps are not used exactly this way anymore. Each different profile will get its own installation instructions. The only installation instructions written so far are those for the `server` profile.
 
 ### Installation instructions
 
@@ -69,7 +69,7 @@ nixos-enter --root /mnt -c 'passwd VAR_USERNAME'
 The following variables need to be changed:
 
 - VAR_USERNAME: This is whatever your actual username is
-- VAR_YOUR_NAME: This is your first and last name, such as John Smith
+- VAR_FULL_NAME: This is your first and last name, such as John Smith
 - VAR_MSMTP_EMAIL: This is the email address that should be used for `msmtp`
 - VAR_MSMTP_SERVER: This is the mailserver address, such as `mail.domain.com`
 - VAR_EMAIL: This is your personal email address, such as `johnsmith@qooqle.com`
