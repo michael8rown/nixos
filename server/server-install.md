@@ -5,9 +5,9 @@ git clone https://github.com/michael8rown/nixos.git
 cd nixos
 ```
 
-[ edit `part.sh` if you want to automate partitioning ]
+Edit `part.sh` if you want to automate partitioning
 
-[ my new server layout is: ]
+My new server layout is:
 
 ```
 	/dev/sda
@@ -32,8 +32,7 @@ mount -o bind /mnt/mnt/storage/images -m /mnt/var/lib/libvirt/images
 nixos-generate-config --root /mnt
 ```
 
-[ let nixos-generate-config set up the binds with the correct uuids, then move them ]
-[ to configuration.nix later in these steps ]
+Let `nixos-generate-config` set up the binds with the correct uuids, then move them to `configuration.nix` later in these steps.
 
 ```
 umount /mnt/home
@@ -50,13 +49,20 @@ mv configuration.nix orig.configuration.nix
 mv server/flake.nix .
 ```
 
-[ edit `setup.sh` to reflect the correct variables then run it ]
+Edit `setup.sh` to reflect the correct variables then run it.
 
 ```
 ./setup.sh
 ```
 
-[ move fileSystems entries for the binds from `hardware-configuration.nix` to `configuration.nix` ]
+Move fileSystems entries for the binds from `hardware-configuration.nix` to `configuration.nix`, then begin the install.
+
+> [!WARNING]
+> Make sure you've unmounted the bind mounts otherwise installtion will fail.
+>
+> Also, if you add anything to the VAR_USERNAME home directory while it's mounted at /mnt/home, you'll have to manually move that data to /mnt/storage/home before rebooting, otherwise it will be entirely lost.
+>
+> Don't ask me how I know.
 
 ```
 nix-channel --remove nixos && nix-channel --update 
