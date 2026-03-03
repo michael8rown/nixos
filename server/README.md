@@ -68,4 +68,8 @@ Move fileSystems entries for the binds from `hardware-configuration.nix` to `con
 nix-channel --remove nixos && nix-channel --update 
 nixos-install --flake .#<hostname>
 nixos-enter --root /mnt -c 'passwd <username>'
+
+cd /
+umount -a
+reboot
 ```
