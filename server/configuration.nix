@@ -170,8 +170,8 @@ in
 		interfaces.br0.ipv4.addresses = [ { address = "192.168.122.188"; prefixLength = 24; } ];
 	};
 
-#	virtualisation.libvirtd.enable = true;
-#	virtualisation.libvirtd.allowedBridges = [ "br0" ];
+	virtualisation.libvirtd.enable = true;
+	virtualisation.libvirtd.allowedBridges = [ "br0" ];
 
 	# Set your time zone.
 	time.timeZone = "America/Denver";
