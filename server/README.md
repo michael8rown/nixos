@@ -10,16 +10,16 @@ Edit `part.sh` if you want to automate partitioning
 My new server layout is:
 
 ```
-	/dev/sda
-		sda1	/boot
-		sda2	/
-		sda3	/mnt/storage
-				/mnt/storage/www	=> /var/www
-				/mnt/storage/home	=> /home
-				/mnt/storage/images	=> /var/lib/libvirtd/images
-		sda4	swap
-	/dev/sdb
-		sdb1	/mnt/backup
+	sda           1.8T  disk 
+	├─sda1          2G  part /boot
+	├─sda2        100G  part /
+	├─sda3        1.6T  part /mnt/storage
+	├────────────────────────/mnt/storage/www    => /var/www
+	├────────────────────────/mnt/storage/home   => /home
+	├────────────────────────/mnt/storage/images => /var/lib/libvirtd/images
+	└─sda4          4G  part [SWAP]
+	sdb             1T  disk 
+	└─sdb1          1T  part /mnt/backup
 
 mkdir -p /mnt/home
 mkdir -p /mnt/var/www
