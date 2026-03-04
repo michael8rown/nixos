@@ -4,9 +4,10 @@
 	inputs =
 		{
 			nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+			agenix.url  = "github:ryantm/agenix";
 		};
 
-	outputs = inputs @ { self, nixpkgs, ... }:
+	outputs = inputs @ { self, nixpkgs, agenix, ... }:
 	let
 		system = "x86_64-linux";
 		pkgs = import nixpkgs {
@@ -37,6 +38,8 @@
 				};
 				modules = [ 
 					(./. + ("/" + systemSettings.profile) + "/configuration.nix")
+					agenix.nixosModules.default
+					{ environment.systemPackages = [ agenix.packages.${system}.default ]; }
 				]; 
 			};
 		};

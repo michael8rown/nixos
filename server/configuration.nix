@@ -106,6 +106,11 @@ in
 			#<agenix/modules/age.nix>
 		];
 
+	age.secrets.msmtp = {
+		file = ../secrets/msmtp.age;
+		owner = systemSettings.username;
+		group = "users";
+	};
 
 	#age = {
 	    # We're letting `agenix` know where the locations of the age files will be
@@ -288,7 +293,8 @@ in
 				host = systemSettings.msmtp_server;
 				port = 465;
 				user = systemSettings.msmtp_email;
-				passwordeval = "${pkgs.coreutils-full}/bin/cat /home/${systemSettings.username}/.secrets/smtp.txt";
+				passwordeval = "cat ${config.age.secrets.msmtp.path}";
+#				passwordeval = "${pkgs.coreutils-full}/bin/cat /home/${systemSettings.username}/.secrets/smtp.txt";
 			};
 		};
 	};
