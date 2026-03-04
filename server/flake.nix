@@ -26,6 +26,8 @@
 			email 		 = "VAR_EMAIL";			# your personal email address, such as `johnsmith@qooqle.com`
 			ssh_port 	 = VAR_SSH_PORT;		# the port you use for `sshd`
 			http_root 	 = "VAR_HTTP_ROOT";		# the root directory of your webserver, e.g., `/var/www` or `/srv/httpd`
+			gateway 	 = "VAR_GATEWAY";		# the default gateway, eg., 192.182.122.1 or 10.0.0.1
+			ipv4 	 	 = "VAR_IPV4";			# the manually-set ip address for this machine, eg. 10.0.0.127
 		};
 
 	in

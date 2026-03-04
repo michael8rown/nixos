@@ -99,11 +99,9 @@ in
 	};
 
 	imports =
-		[ # Include the results of the hardware scan.
+		[ 
 			../hardware-configuration.nix
 			./bashrc.nix
-			#<home-manager/nixos>
-			#<agenix/modules/age.nix>
 		];
 
 	age.secrets.msmtp = {
@@ -146,11 +144,11 @@ in
 		hostName = systemSettings.hostname; # Define your hostname.
 		networkmanager.enable = false;
 		useDHCP = false;
-		defaultGateway = "192.168.122.1";
+		defaultGateway = "${systemSettings.gateway}";
 		bridges = {
 			"br0" = { interfaces = [ "enp1s0" ]; };
 		};
-		interfaces.br0.ipv4.addresses = [ { address = "192.168.122.188"; prefixLength = 24; } ];
+		interfaces.br0.ipv4.addresses = [ { address = "${systemSettings.ipv4}"; prefixLength = 24; } ];
 	};
 
 	virtualisation.libvirtd.enable = true;
