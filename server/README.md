@@ -18,8 +18,9 @@ My new server layout is:
 	├────────────────────────/mnt/storage/home   => /home
 	├────────────────────────/mnt/storage/images => /var/lib/libvirtd/images
 	└─sda4          4G  part [SWAP]
-	sdb             1T  disk 
-	└─sdb1          1T  part /mnt/backup
+	sdb         931.5G  disk 
+	└─sdb1      931.5G  part /mnt/backup
+
 
 mkdir -p /mnt/home
 mkdir -p /mnt/var/www
