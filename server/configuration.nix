@@ -112,28 +112,6 @@ in
 		group = "users";
 	};
 
-	#age = {
-	    # We're letting `agenix` know where the locations of the age files will be
-	    # in the server.
-	#  secrets = {
-	#    secret1 = {
-	#      file = "/home/"+systemSettings.username+"/.secrets/secret1.age";
-	#    };
-	#    msmtp = { 
-	#      file = "/home/"+systemSettings.username+"/.secrets/msmtp.age";
-	#      owner = systemSettings.username;
-	#      group = "users";
-	    #	group = config.users.groups.sendmail.name;
-	#      mode = "0440";
-	#    };
-	#  };
-	# Private key of the SSH key pair. This is the other pair of what was supplied
-	# in `secrets.nix`.
-	#
-	# This tells `agenix` where to look for the private key.
-	#  identityPaths = [ "/home/"+systemSettings.username+"/.ssh/id_ed25519" ];
-	#};
-
 	# Use the systemd-boot EFI boot loader.
 	boot.loader.systemd-boot.enable = true;
 	boot.loader.efi.canTouchEfiVariables = true;
@@ -198,7 +176,7 @@ in
 	};
 
 	# Enable CUPS to print documents.
-	services.printing.enable = true;
+#	services.printing.enable = true;
 
 	# Enable sound with pipewire.
 	#sound.enable = true;
@@ -259,7 +237,6 @@ in
 		perlEnv
 		jq
 		samba
-#		(callPackage <agenix/pkgs/agenix.nix> {})
 		efibootmgr
 		pciutils
 		bc
@@ -360,19 +337,6 @@ in
 		mysql = {
 			enable = true;
 			package = pkgs.mariadb;
-			# extraOptions = ''
-			#   query_cache_type = 1
-			#   query_cache_limit = 2M
-			#   query_cache_size = 4M
-			#   thread_cache_size = 4
-			#   innodb_buffer_pool_size = 325M
-			#   innodb_buffer_pool_instances = 1
-			#   # smallest value since it's not used
-			#   aria_pagecache_buffer_size = 128K
-			#   # values should be equal
-			#   tmp_table_size = 30M
-			#   max_heap_table_size = 30M
-			# '';
 		};
 
 		samba = {
@@ -416,66 +380,38 @@ in
 					"force group" = "users";
 				};
 			};
-#			shares = {
-				#public = {
-				#  path = "/mnt/Shares/Public";
-				#  browseable = "yes";
-				#  "read only" = "no";
-				#  "guest ok" = "yes";
-				#  "create mask" = "0644";
-				#  "directory mask" = "0755";
-				#  "force user" = "username";
-				#  "force group" = "groupname";
-				#};
-#				homes = {
-#					comment = "Home Directories";
-#					browseable = "no";
-#					writable = "yes";
-#				};
-#				nixshare = {
-#					path = "/home/"+systemSettings.username;
-#					comment = "NixOS Samba share";
-#					browseable = "yes";
-#					"read only" = "no";
-#					"guest ok" = "no";
-#					"create mask" = "0644";
-#					"directory mask" = "0755";
-#					"force user" = systemSettings.username;
-#					"force group" = "users";
-#				};
-#			};
 		};
 
 	}; # end of services
 
-	#systemd.targets.sleep.enable = false;
-	#systemd.targets.suspend.enable = false;
-	#systemd.targets.hibernate.enable = false;
-	#systemd.targets.hybrid-sleep.enable = false;
+	systemd.targets.sleep.enable = false;
+	systemd.targets.suspend.enable = false;
+	systemd.targets.hibernate.enable = false;
+	systemd.targets.hybrid-sleep.enable = false;
 
 	systemd.timers = {
 
-		"nixosUpdate" = {
+		"${systemSettings.hostname}Update" = {
 			enable = false;
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
 				OnCalendar = "Tue 19:43:00";
 				Persistent = true;
-				Unit = "nixosUpdate.service";
+				Unit = "${systemSettings.hostname}Update.service";
 			};
 		};
 
-		#"nixosUpdate" = {
+		#"${systemSettings.hostname}Update" = {
 		#  enable = true;
 		#  wantedBy = [ "timers.target" ];
 		#  timerConfig = {
 		#    OnCalendar = "Sat 05:30:00";
 		#    Persistent = true;
-		#    Unit = "nixosUpdate.service";
+		#    Unit = "${systemSettings.hostname}Update.service";
 		#  };
 		#};
 
-		"nixosStatus" = {
+		"${systemSettings.hostname}Status" = {
 			enable = false;
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
@@ -483,7 +419,7 @@ in
 					"Mon..Fri 16,18,22:15:00"
 					"Sat,Sun 05,16,22:15:00"
 				];
-				Unit = "nixosStatus.service";
+				Unit = "${systemSettings.hostname}Status.service";
 			};
 		};
 
@@ -500,16 +436,16 @@ in
 
 	systemd.services = {
 
-		"nixosUpdate" = {
-			description = "Check for NixOS updates";
+		"${systemSettings.hostname}Update" = {
+			description = "Check for ${systemSettings.hostname} updates";
 			serviceConfig = {
 				Type = "oneshot";
 				ExecStart = "/root/update.sh";
 			};
 		};
 
-		#"nixosUpdate" = {
-		#  description = "Check for NixOS updates";
+		#"${systemSettings.hostname}Update" = {
+		#  description = "Check for ${systemSettings.hostname} updates";
 		#  serviceConfig = {
 		#    Type = "oneshot";
 		#    User = systemSettings.username;
@@ -517,8 +453,8 @@ in
 		#  };
 		#};
 
-		"nixosStatus" = {
-			description = "Status update for NixOS";
+		"${systemSettings.hostname}Status" = {
+			description = "Status update for ${systemSettings.hostname}";
 			serviceConfig = {
 				Type = "oneshot";
 				User = systemSettings.username;
