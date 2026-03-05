@@ -367,8 +367,8 @@ in
 					writable = "yes";
 				};
 				nixshare = {
-					path = "/home/"+systemSettings.username;
-					comment = "NixOS Samba share";
+					path = "/home/${systemSettings.username}";
+					comment = "${systemSettings.hostname} Samba share";
 					browseable = "yes";
 					"read only" = "no";
 					"guest ok" = "no";
