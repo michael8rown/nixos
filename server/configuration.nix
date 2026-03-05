@@ -389,86 +389,208 @@ in
 
 	systemd.timers = {
 
-		"${systemSettings.hostname}Update" = {
-			enable = false;
-			wantedBy = [ "timers.target" ];
-			timerConfig = {
-				OnCalendar = "Tue 19:43:00";
-				Persistent = true;
-				Unit = "${systemSettings.hostname}Update.service";
-			};
-		};
-
-		#"${systemSettings.hostname}Update" = {
-		#  enable = true;
-		#  wantedBy = [ "timers.target" ];
-		#  timerConfig = {
-		#    OnCalendar = "Sat 05:30:00";
-		#    Persistent = true;
-		#    Unit = "${systemSettings.hostname}Update.service";
-		#  };
-		#};
-
 		"${systemSettings.hostname}Status" = {
 			enable = false;
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
 				OnCalendar = [
-					"Mon..Fri 16,18,22:15:00"
+					"Mon..Fri 05,16,18,22:15:00"
 					"Sat,Sun 05,16,22:15:00"
 				];
 				Unit = "${systemSettings.hostname}Status.service";
 			};
 		};
 
-		#"goToSleep" = {
-		#  enable = false;
-		#  wantedBy = [ "timers.target" ];
-		#  timerConfig = {
-		#    OnCalendar = "*-*-* 22:30:00";
-		#    Unit = "goToSleep.service";
-		#  };
-		#};
+		"br0" = {
+			enable = false;
+			description = "Timer to bring up network br0 two minutes after boot and start debian12 vm";
+			wantedBy = [ "multi-user.target" ];
+			timerConfig = {
+				OnBootSec = "1min";
+				Unit = "br0.service";
+			};
+		};
+
+		"changedFiles" = {
+			enable = false;
+			description = "Timer to look for changes in directories";
+			wantedBy = [ "timers.target" ];
+			timerConfig = {
+				OnCalendar = "*-*-* 5:20:00";
+				Unit = "changedFiles.service";
+			};
+		};
+
+		"ckJobs" = {
+			enable = false;
+			description = "Timer for job check";
+			wantedBy = [ "timers.target" ];
+			timerConfig = {
+				OnCalendar = "*-*-* 05,11,17:30:00";
+				Unit = "ckJobs.service";
+			};
+		};
+
+		"ckUpd" = {
+			enable = false;
+			description = "Check for available updates";
+			wantedBy = [ "timers.target" ];
+			timerConfig = {
+				OnCalendar = "Sat 05:30:00";
+				Persistent = true;
+				Unit = "ckUpd.service";
+			};
+		};
+
+		"goToSleep" = {
+			enable = false;
+			description = "Put the system to sleep";
+			wantedBy = [ "timers.target" ];
+			timerConfig = {
+				OnCalendar = "*-*-* 22:30:00";
+				Unit = "goToSleep.service";
+			};
+		};
+
+		"hiTemp" = {
+			enable = false;
+			description = "Get previous days' high temp";
+			wantedBy = [ "timers.target" ];
+			timerConfig = {
+				OnCalendar = "*-*-* 05:10:00";
+				Unit = "hiTemp.service";
+			};
+		};
+
+		"lbBkup" = {
+			enable = false;
+			description = "Check for libro updates";
+			wantedBy = [ "timers.target" ];
+			timerConfig = {
+				OnCalendar = "*-*-* 22:05:00";
+				Unit = "lbBkup.service";
+			};
+		};
+
+		"vmCtrl" = {
+			enable = false;
+			description = "Timer to suspend resume debian12";
+			wantedBy = [ "timers.target" ];
+			timerConfig = {
+				OnCalendar = "*-*-* 22:15:00";
+				OnCalendar = "*-*-* 05:05:00";
+				Unit = "vmCtrl.service";
+			};
+		};
+
+		"wc" = {
+			enable = false;
+			description = "Check for new word counts";
+			wantedBy = [ "timers.target" ];
+			timerConfig = {
+				OnCalendar = "*-*-* 22:20:00";
+			};
+		};
 
 	};
 
 	systemd.services = {
 
-		"${systemSettings.hostname}Update" = {
-			description = "Check for ${systemSettings.hostname} updates";
-			serviceConfig = {
-				Type = "oneshot";
-				ExecStart = "/root/update.sh";
-			};
-		};
-
-		#"${systemSettings.hostname}Update" = {
-		#  description = "Check for ${systemSettings.hostname} updates";
-		#  serviceConfig = {
-		#    Type = "oneshot";
-		#    User = systemSettings.username;
-		#    ExecStart = "/home/"+systemSettings.username+"/checkupdates.sh";
-		#  };
-		#};
-
 		"${systemSettings.hostname}Status" = {
-			description = "Status update for ${systemSettings.hostname}";
+			description = "Status alert for ${systemSettings.hostname}";
 			serviceConfig = {
 				Type = "oneshot";
 				User = systemSettings.username;
+				Group = "users";
 				ExecStart = "/home/"+systemSettings.username+"/motd-2.0.sh";
 			};
 		};
 
-		#"goToSleep" = {
-		#  description = "Put the system to sleep";
-		#  serviceConfig = {
-		#    Type = "oneshot";
-		#    ExecStart = "/usr/local/bin/goToSleep";
-		#    StandardOutput = "append:/home/"+systemSettings.username+"/.suspend.log";
-		#    StandardError = "append:/home/"+systemSettings.username+"/.error-suspend.log";
-		#  };
-		#};
+		"br0" = {
+			description = "Bring up network br0 1 minute after boot and start debian12 vm";
+			requires = [ "network.target" ];
+			wantedBy = [ "multi-user.target" ];
+			serviceConfig = {
+				Type = "oneshot";
+				ExecStart = "/usr/local/bin/br0.sh";
+			};
+		};
+
+		"changedFiles" = {
+			description = "Look for changes in directories";
+			serviceConfig = {
+				Type = "oneshot";
+				User = systemSettings.username;
+				Group = "users";
+				ExecStart = "/home/"+systemSettings.username+"/change.sh";
+			};
+		};
+
+		"ckJobs" = {
+			description = "Check for new jobs";
+			serviceConfig = {
+				Type = "oneshot";
+				User = systemSettings.username;
+				Group = "users";
+				ExecStart = "/home/"+systemSettings.username+"/jobs/jobs.sh";
+			};
+		};
+
+		"ckUpd" = {
+			description = "Check for available updates";
+			serviceConfig = {
+				Type = oneshot";
+				ExecStart = "/usr/local/bin/update.sh";
+			};
+		};
+
+		"goToSleep" = {
+			description = "Put the system to sleep";
+			serviceConfig = {
+				Type = "oneshot";
+				ExecStart = "/usr/local/bin/goToSleep";
+				StandardOutput = "append:/home/"+systemSettings.username+"/.suspend.log";
+				StandardError = "append:/home/"+systemSettings.username+"/.suspend.log";
+			};
+		};
+
+		"hiTemp" = {
+			description = "Get previous days' high temp";
+			serviceConfig = {
+				Type = "oneshot";
+				User = systemSettings.username;
+				Group = "users";
+				ExecStart = "/home/"+systemSettings.username+"/temp.sh";
+			};
+		};
+
+		"lbBkup" = {
+			description = "Check for libro updates";
+			serviceConfig = {
+				Type = "oneshot";
+				User = systemSettings.username;
+				Group = "users";
+				ExecStart = "/home/"+systemSettings.username+"/db/backup";
+			};
+		};
+
+		"vmCtrl" = {
+			description = "Suspend/Resume debian12";
+			serviceConfig = {
+				Type = "oneshot";
+				ExecStart = "/usr/local/bin/vmCtrl";
+			};
+		};
+
+		"wc" = {
+			description = "Check for new word counts";
+			serviceConfig = {
+				Type = "oneshot";
+				User = systemSettings.username;
+				Group = "users";
+				ExecStart = "/home/"+systemSettings.username+"/db/wc.sh";
+			};
+		};
 
 	};
 
