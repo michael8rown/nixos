@@ -503,7 +503,7 @@ in
 				Type = "oneshot";
 				User = systemSettings.username;
 				Group = "users";
-				ExecStart = "/home/"+systemSettings.username+"/motd-2.0.sh";
+				ExecStart = "/home/${systemSettings.username}/motd-2.0.sh";
 			};
 		};
 
@@ -523,7 +523,7 @@ in
 				Type = "oneshot";
 				User = systemSettings.username;
 				Group = "users";
-				ExecStart = "/home/"+systemSettings.username+"/change.sh";
+				ExecStart = "/home/${systemSettings.username}/change.sh";
 			};
 		};
 
@@ -533,7 +533,7 @@ in
 				Type = "oneshot";
 				User = systemSettings.username;
 				Group = "users";
-				ExecStart = "/home/"+systemSettings.username+"/jobs/jobs.sh";
+				ExecStart = "/home/${systemSettings.username}/jobs/jobs.sh";
 			};
 		};
 
@@ -550,8 +550,8 @@ in
 			serviceConfig = {
 				Type = "oneshot";
 				ExecStart = "/usr/local/bin/goToSleep";
-				StandardOutput = "append:/home/"+systemSettings.username+"/.suspend.log";
-				StandardError = "append:/home/"+systemSettings.username+"/.suspend.log";
+				StandardOutput = "append:/home/${systemSettings.username}/.suspend.log";
+				StandardError = "append:/home/${systemSettings.username}/.suspend.log";
 			};
 		};
 
@@ -561,7 +561,7 @@ in
 				Type = "oneshot";
 				User = systemSettings.username;
 				Group = "users";
-				ExecStart = "/home/"+systemSettings.username+"/temp.sh";
+				ExecStart = "/home/${systemSettings.username}/temp.sh";
 			};
 		};
 
@@ -571,7 +571,7 @@ in
 				Type = "oneshot";
 				User = systemSettings.username;
 				Group = "users";
-				ExecStart = "/home/"+systemSettings.username+"/db/backup";
+				ExecStart = "/home/${systemSettings.username}/db/backup";
 			};
 		};
 
@@ -589,7 +589,7 @@ in
 				Type = "oneshot";
 				User = systemSettings.username;
 				Group = "users";
-				ExecStart = "/home/"+systemSettings.username+"/db/wc.sh";
+				ExecStart = "/home/${systemSettings.username}/db/wc.sh";
 			};
 		};
 
