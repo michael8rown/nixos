@@ -288,7 +288,7 @@ in
 #			enable = true;
 #		};
 
-		resolved.enable = true;
+#		resolved.enable = true;
 
 		# SSHD
 		openssh = {
