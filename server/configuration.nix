@@ -493,7 +493,6 @@ in
 				OnCalendar = "*-*-* 22:20:00";
 			};
 		};
-
 	};
 
 	systemd.services = {
@@ -541,7 +540,7 @@ in
 		"ckUpd" = {
 			description = "Check for available updates";
 			serviceConfig = {
-				Type = oneshot";
+				Type = "oneshot";
 				ExecStart = "/usr/local/bin/update.sh";
 			};
 		};
