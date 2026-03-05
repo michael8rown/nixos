@@ -57,23 +57,23 @@ let
 in
 {
 
-  fileSystems."/home" =
-    { device = "/mnt/storage/home";
-      fsType = "none";
-      options = [ "bind" ];
-    };
+	fileSystems."/home" = { 
+		device = "/mnt/storage/home";
+		fsType = "none";
+		options = [ "bind" ];
+	};
 
-  fileSystems."/var/www" =
-    { device = "/mnt/storage/www";
-      fsType = "none";
-      options = [ "bind" ];
-    };
+	fileSystems."/var/www" = {
+		device = "/mnt/storage/www";
+		fsType = "none";
+		options = [ "bind" ];
+	};
 
-  fileSystems."/var/lib/libvirt/images" =
-    { device = "/mnt/storage/images";
-      fsType = "none";
-      options = [ "bind" ];
-    };
+	fileSystems."/var/lib/libvirt/images" = {
+		device = "/mnt/storage/images";
+		fsType = "none";
+		options = [ "bind" ];
+	};
 
 	nix = {
 		settings = {
