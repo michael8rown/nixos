@@ -477,8 +477,10 @@ in
 			description = "Timer to suspend resume debian12";
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
-				OnCalendar = "*-*-* 22:15:00";
-				OnCalendar = "*-*-* 05:05:00";
+				OnCalendar = [
+					"*-*-* 22:15:00"
+					"*-*-* 05:05:00"
+				];
 				Unit = "vmCtrl.service";
 			};
 		};
