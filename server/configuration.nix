@@ -2,8 +2,8 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, systemSettings, ... }:
-
+{ config, pkgs, lib, inputs, systemSettings, ... }:
+with lib; # added 3/13/2026
 let
 	perlEnv = pkgs.perl.withPackages (p: with p; [
 		ModuleCPANfile
@@ -56,25 +56,6 @@ let
 	]);
 in
 {
-
-	fileSystems."/home" = { 
-		device = "/mnt/storage/home";
-		fsType = "none";
-		options = [ "bind" ];
-	};
-
-	fileSystems."/var/www" = {
-		device = "/mnt/storage/www";
-		fsType = "none";
-		options = [ "bind" ];
-	};
-
-	fileSystems."/var/lib/libvirt/images" = {
-		device = "/mnt/storage/images";
-		fsType = "none";
-		options = [ "bind" ];
-	};
-
 	nix = {
 		settings = {
 			experimental-features = [ "nix-command" "flakes" ];
@@ -99,16 +80,44 @@ in
 	};
 
 	imports =
-		[ 
+		[ # Include the results of the hardware scan.
 			../hardware-configuration.nix
 			./bashrc.nix
+			./httpd-override.nix
+			#../python/jobs.nix # <--
+			#<home-manager/nixos>
+			#<agenix/modules/age.nix>
 		];
+
 
 	age.secrets.msmtp = {
 		file = ../secrets/msmtp.age;
 		owner = systemSettings.username;
 		group = "users";
 	};
+
+
+	#age = {
+	    # We're letting `agenix` know where the locations of the age files will be
+	    # in the server.
+	#  secrets = {
+	#    secret1 = {
+	#      file = "/home/"+systemSettings.username+"/.secrets/secret1.age";
+	#    };
+	#    msmtp = { 
+	#      file = "/home/"+systemSettings.username+"/.secrets/msmtp.age";
+	#      owner = systemSettings.username;
+	#      group = "users";
+	    #	group = config.users.groups.sendmail.name;
+	#      mode = "0440";
+	#    };
+	#  };
+	# Private key of the SSH key pair. This is the other pair of what was supplied
+	# in `secrets.nix`.
+	#
+	# This tells `agenix` where to look for the private key.
+	#  identityPaths = [ "/home/"+systemSettings.username+"/.ssh/id_ed25519" ];
+	#};
 
 	# Use the systemd-boot EFI boot loader.
 	boot.loader.systemd-boot.enable = true;
@@ -124,7 +133,7 @@ in
 	#  system.autoUpgrade.enable = true;
 	#  system.autoUpgrade.allowReboot = false;
 
-	# Enable networking
+#	networking.hostName = systemSettings.hostname; # Define your hostname.
 	# networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 	# networking.interfaces.enp4s0.ipv4.addresses = [ { address = "10.11.12.122"; prefixLength = 24; } ];
 	# networking.defaultGateway = "10.11.12.1";
@@ -135,46 +144,75 @@ in
 	# networking.proxy.default = "http://user:password@proxy:port/";
 	# networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-#	networking = {
-#		networkmanager.enable = true;
-#		hostName = systemSettings.hostname;
-#	};
-
+	# Enable networking
 	networking = {
+		networkmanager.enable = true;
 		hostName = systemSettings.hostname; # Define your hostname.
-		networkmanager.enable = false;
-		useDHCP = false;
-		defaultGateway = "${systemSettings.gateway}";
-		bridges = {
-			"br0" = { interfaces = [ "enp1s0" ]; };
-		};
-		interfaces.br0.ipv4.addresses = [ { address = "${systemSettings.ipv4}"; prefixLength = 24; } ];
+#		networkmanager.enable = false;
+#		#interfaces.enp1s0.ipv4.addresses = [ { address = "10.0.0.122"; prefixLength = 24; } ];
+#		defaultGateway = "10.0.0.1";
+#		nameservers = [ "1.1.1.1" "8.8.8.8" ];
+#		useDHCP = false;
+#		bridges.br0.interfaces = [ "enp1s0" ];
+#		interfaces.br0.ipv4.addresses = [ { address = "10.0.0.140"; prefixLength = 24; } ];
 	};
 
-	virtualisation.libvirtd.enable = true;
-	virtualisation.libvirtd.allowedBridges = [ "br0" ];
+#	virtualisation.libvirtd.enable = true;
+#	virtualisation.libvirtd.allowedBridges = [ "br0" ];
+
+  # From barrucadu:
+  # Set up a bridge network so that VMs can connect to the LAN
+  #
+  # `enp8s0` is the physical ethernet interface, but I am slaving that to the
+  # `br0` bridge - so it's the bridge's MAC address that gets presented to the
+  # physical network.
+  #
+  # To avoid having to reconfigure static IP assignments in my router if I
+  # switch between bridged and non-bridged networking, set up the MAC addresses
+  # such that:
+  #
+  # - `br0` has the MAC address of the physical ethernet card
+  # - `enp8s0` has a new random MAC address (https://serverfault.com/a/631119)
+  #
+  # So if I delete this block, the MAC address the router sees is unchanged, and
+  # so the static IP assignment is unaffected.
+#  networking.useDHCP = false;
+#  networking.interfaces.br0 = {
+#    useDHCP = true;
+#    macAddress = "a0:36:bc:bb:65:8d";
+#  };
+#  networking.interfaces.enp8s0 = {
+#    macAddress = "92:0b:e6:21:86:99";
+#    useDHCP = true;
+#  };
+#  networking.bridges.br0.interfaces = [ "enp8s0" ];
+
+#  virtualisation.libvirtd.enable = true;
+#  virtualisation.libvirtd.allowedBridges = [ "br0" ];
+
+
+
 
 	# Set your time zone.
 	time.timeZone = "America/Denver";
 
 	# Select internationalisation properties.
-	i18n = {
-		defaultLocale = "en_US.UTF-8";
-		extraLocaleSettings = {
-			LC_ADDRESS = "en_US.UTF-8";
-			LC_IDENTIFICATION = "en_US.UTF-8";
-			LC_MEASUREMENT = "en_US.UTF-8";
-			LC_MONETARY = "en_US.UTF-8";
-			LC_NAME = "en_US.UTF-8";
-			LC_NUMERIC = "en_US.UTF-8";
-			LC_PAPER = "en_US.UTF-8";
-			LC_TELEPHONE = "en_US.UTF-8";
-			LC_TIME = "en_US.UTF-8";
-		};
+	i18n.defaultLocale = "en_US.UTF-8";
+
+	i18n.extraLocaleSettings = {
+		LC_ADDRESS = "en_US.UTF-8";
+		LC_IDENTIFICATION = "en_US.UTF-8";
+		LC_MEASUREMENT = "en_US.UTF-8";
+		LC_MONETARY = "en_US.UTF-8";
+		LC_NAME = "en_US.UTF-8";
+		LC_NUMERIC = "en_US.UTF-8";
+		LC_PAPER = "en_US.UTF-8";
+		LC_TELEPHONE = "en_US.UTF-8";
+		LC_TIME = "en_US.UTF-8";
 	};
 
 	# Enable CUPS to print documents.
-#	services.printing.enable = true;
+	#services.printing.enable = true;
 
 	# Enable sound with pipewire.
 	#sound.enable = true;
@@ -202,6 +240,7 @@ in
 		# initialPassword = "password";
 		description = systemSettings.username;
 		extraGroups = [ "libvirtd" "wheel" ];
+#		extraGroups = [ "networkmanager" "wheel" ];
 #		packages = with pkgs; [		];
 	};
 
@@ -216,13 +255,9 @@ in
 		git
 		fastfetch
 		php
-		python3
-		python312Packages.selenium
-		python312Packages.requests
-		python312Packages.beautifulsoup4
-		uv
-		pyenv
+		python312
 #		firewalld
+		bc
 		chromedriver
 		undetected-chromedriver
 		bat
@@ -235,68 +270,52 @@ in
 		perlEnv
 		jq
 		samba
+		wireguard-tools
 		efibootmgr
 		pciutils
-		bc
-		sshpass
-		fail2ban
 ];
 
-	# Some programs need SUID wrappers, can be configured further or are
-	# started in user sessions.
-	# programs.mtr.enable = true;
-	# programs.gnupg.agent = {
-	#   enable = true;
-	#   enableSSHSupport = true;
-	# };
+	programs = {
+		nano = {
+			nanorc = ''
+				set nowrap
+				set tabsize 4
+			'';
+		};
 
-	programs.nano = {
-		nanorc = ''
-			set nowrap
-			set tabsize 4
-		'';
-	};
-
-	programs.msmtp = {
-		enable = true;
-		accounts = {
-			default = {
-				auth = true;
-				tls = true;
-				tls_starttls = false;
-				from = systemSettings.msmtp_email;
-				host = systemSettings.msmtp_server;
-				port = 465;
-				user = systemSettings.msmtp_email;
-				passwordeval = "cat ${config.age.secrets.msmtp.path}";
-#				passwordeval = "${pkgs.coreutils-full}/bin/cat /home/${systemSettings.username}/.secrets/smtp.txt";
+		msmtp = {
+			enable = true;
+			accounts = {
+				default = {
+					auth = true;
+					tls = true;
+					tls_starttls = false;
+					from = systemSettings.msmtp_email;
+					host = systemSettings.msmtp_server;
+					port = 465;
+					user = systemSettings.msmtp_email;
+					passwordeval = "cat ${config.age.secrets.msmtp.path}";
+#					passwordeval = "${pkgs.coreutils-full}/bin/cat /home/${systemSettings.username}/.secrets/smtp.txt";
+				};
 			};
 		};
 	};
+
 
 	# List services that you want to enable:
 
 	services = {
 
-		logind.settings.Login = {
-			HandleLidSwitch = "ignore";
-			HandleLidSwitchExternalPower = "ignore";
-			HandleLidSwitchDocked = "ignore";
-		};
-
 #		firewalld = {
 #			enable = true;
 #		};
+#		ruterstop.enable = true;
 
-#		resolved.enable = true;
-
-		# SSHD
 		openssh = {
 			enable = true;
 			ports = [ systemSettings.ssh_port ];
 		};
 
-		# Apache
 		httpd = {
 			enable = true;
 			adminAddr = "admin@localhost";
@@ -309,6 +328,7 @@ in
 				error_reporting = E_ALL & ~E_DEPRECATED
 			'';
 
+			#configFile = "/etc/nixos/server/httpd.conf";
 			virtualHosts.localhost = {
 				documentRoot = systemSettings.http_root;
 				extraConfig = ''
@@ -328,10 +348,9 @@ in
 					</Directory>
 				'';
 			};
+
 		};
 
-
-		# MariaDB
 		mysql = {
 			enable = true;
 			package = pkgs.mariadb;
@@ -367,8 +386,8 @@ in
 					writable = "yes";
 				};
 				nixshare = {
-					path = "/home/${systemSettings.username}";
-					comment = "${systemSettings.hostname} Samba share";
+					path = "/home/"+systemSettings.username;
+					comment = "NixOS Samba share";
 					browseable = "yes";
 					"read only" = "no";
 					"guest ok" = "no";
@@ -381,6 +400,8 @@ in
 		};
 
 	}; # end of services
+
+# ================================================================================
 
 	systemd.targets.sleep.enable = false;
 	systemd.targets.suspend.enable = false;
@@ -401,15 +422,15 @@ in
 			};
 		};
 
-		"br0" = {
-			enable = false;
-			description = "Timer to bring up network br0 two minutes after boot and start debian12 vm";
-			wantedBy = [ "multi-user.target" ];
-			timerConfig = {
-				OnBootSec = "1min";
-				Unit = "br0.service";
-			};
-		};
+#		"br0" = {
+#			enable = false;
+#			description = "Timer to bring up network br0 two minutes after boot and start debian12 vm";
+#			wantedBy = [ "multi-user.target" ];
+#			timerConfig = {
+#				OnBootSec = "1min";
+#				Unit = "br0.service";
+#			};
+#		};
 
 		"changedFiles" = {
 			enable = false;
@@ -422,7 +443,7 @@ in
 		};
 
 		"ckJobs" = {
-			enable = false;
+			enable = true;
 			description = "Timer for job check";
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
@@ -493,9 +514,26 @@ in
 				OnCalendar = "*-*-* 22:20:00";
 			};
 		};
+
 	};
 
 	systemd.services = {
+
+      "ckJobs" = {
+        #enable = true;
+		description = "Check for new jobs";
+        #after = [ "network.target" ];
+        #wantedBy = [ "network.target" ];
+        serviceConfig = {
+		  Type = "oneshot";
+		  User = systemSettings.username;
+		  Group = "users";
+         # ExecStartPre = "/run/current-system/sw/bin/sleep 45";
+          ExecStart = 
+            let python = pkgs.python312.withPackages (ps: [ ps.requests ps.selenium ]);
+            in "${python}/bin/python3 ${pkgs.writeText "jobs.py" (fileContents ../scripts/jobs.py)}";
+        };
+      };
 
 		"${systemSettings.hostname}Status" = {
 			description = "Status alert for ${systemSettings.hostname}";
@@ -507,15 +545,15 @@ in
 			};
 		};
 
-		"br0" = {
-			description = "Bring up network br0 1 minute after boot and start debian12 vm";
-			requires = [ "network.target" ];
-			wantedBy = [ "multi-user.target" ];
-			serviceConfig = {
-				Type = "oneshot";
-				ExecStart = "/usr/local/bin/br0.sh";
-			};
-		};
+#		"br0" = {
+#			description = "Bring up network br0 1 minute after boot and start debian12 vm";
+#			requires = [ "network.target" ];
+#			wantedBy = [ "multi-user.target" ];
+#			serviceConfig = {
+#				Type = "oneshot";
+#				ExecStart = "/usr/local/bin/br0.sh";
+#			};
+#		};
 
 		"changedFiles" = {
 			description = "Look for changes in directories";
@@ -527,15 +565,15 @@ in
 			};
 		};
 
-		"ckJobs" = {
-			description = "Check for new jobs";
-			serviceConfig = {
-				Type = "oneshot";
-				User = systemSettings.username;
-				Group = "users";
-				ExecStart = "/home/${systemSettings.username}/jobs/jobs.sh";
-			};
-		};
+		#"ckJobs" = {
+		#	description = "Check for new jobs";
+		#	serviceConfig = {
+		#		Type = "oneshot";
+		#		User = systemSettings.username;
+		#		Group = "users";
+		#		ExecStart = "/home/${systemSettings.username}/jobs/jobs.sh";
+		#	};
+		#};
 
 		"ckUpd" = {
 			description = "Check for available updates";
@@ -594,11 +632,6 @@ in
 		};
 
 	};
-
-	#services.samba-wsdd = {
-	#  enable = true;
-	#  openFirewall = true;
-	#};
 
 	#networking.firewall.enable = true;
 	#networking.firewall.allowPing = true;

@@ -5,15 +5,17 @@ set -e -o pipefail
 declare -A arr
 
 arr+=(
-  ["VAR_USERNAME"]=username							# your actual username
-  ["VAR_FULLNAME"]="Firstname Lastname"				# your first and last name, such as John Smith
-  ["VAR_MSMTP_EMAIL"]=username@yourdomain.com		# the email address that should be used for `msmtp`
-  ["VAR_MSMTP_SERVER"]=mail.yourdomain.com			# the mailserver address, such as `mail.yourdomain.com`
-  ["VAR_EMAIL"]=personalemail@gmail.com				# your personal email address, such as `johnsmith@qooqle.com`
-  ["VAR_SSH_PORT"]=####								# the port you use for `sshd`
-  ["VAR_HTTP_ROOT"]=/http/root						# the root directory of your webserver, e.g., `/var/www` or `/srv/httpd`
-  ["VAR_HOSTNAME"]=hostname							# the name of your machine
-  ["VAR_PROFILE"]=profile							# the profile you're installing: gnome, kde, audio, or server
+  ["VAR_USERNAME"]=username						# your actual username
+  ["VAR_FULLNAME"]="Firstname Lastname"			# your first and last name, such as John Smith
+  ["VAR_MSMTP_EMAIL"]=username@yourdomain.com	# the email address that should be used for `msmtp`
+  ["VAR_MSMTP_SERVER"]=mail.yourdomain.com		# the mailserver address, such as `mail.yourdomain.com`
+  ["VAR_EMAIL"]=personalemail@gmail.com			# your personal email address, such as `johnsmith@qooqle.com`
+  ["VAR_SSH_PORT"]=####							# the port you use for `sshd`
+  ["VAR_HTTP_ROOT"]=/http/root					# the root directory of your webserver, e.g., `/var/www` or `/srv/httpd`
+  ["VAR_HOSTNAME"]=hostname						# the name of your machine
+  ["VAR_PROFILE"]=profile						# the profile you're installing: gnome, kde, audio, or server
+  ["VAR_GATEWAY"]=gateway						# the default gateway, eg. 192.168.122.1 or 10.0.0.1
+  ["VAR_IPV4"]=ipv4								# the server's manually-set ip address, eg. 10.0.0.127 or 192.168.122.92
 )
 
 for key in ${!arr[@]}; do
