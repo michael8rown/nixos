@@ -5,6 +5,18 @@ Configurations and miscellaneous files for my home server and my laptops.
 > [!CAUTION]
 > These steps are not used exactly this way anymore. Each different profile will get its own installation instructions. The only profile-specific instructions written so far are those for the [`server`](https://github.com/michael8rown/nixos/tree/main/server) profile.
 
+### Note March 14, 2026
+
+I've tried several times to install the NixOS server configuration on bare metal and have failed miserably each time. Whether it's networking or webserver cgi, something always seems to go wrong. So I always end up back on Arch with this server config installed in a VM.
+
+Over the past two weeks, I've tinkered with it pretty much non-stop. Thanks to two sample configurations at a) [barracadu's nyarlathotep's configuration.nix](https://github.com/barrucadu/nixfiles/blob/master/hosts/nyarlathotep/configuration.nix#L465) and b) [stigok's article on custom perl packages](https://blog.stigok.com/2020/04/16/building-a-custom-perl-package-for-nixos.html), I finally solved my issues with a) getting python to work with non-standard modules in systemd services and b) getting Perl modules such as DBI and CGI to work under httpd, two tasks that are absolutely normal and straight-forward under most Linux distributions but which are phenomenally convoluted under NixOS. I still haven't figured out the best networking config because I really need to install on bare metal for it to truly work, but that will be my next task.
+
+What I've learned over these last couple of weeks is this: NixOS is an IT Professional's OS. It is definitely not well-suited for beginners just wanting a normal Linux experience, and it's not even really good for Linux hobbyists like me. I really love to write new scripts to help automate a task in my daily life. NixOS does not seem interested in rewarding that kind of behavior.
+
+That being said, I admit I feel a huge amount of pride at having figured out two of my biggest issues. If I can get the networking issue settled, I might actually use NixOS on my home server. I really, really love the idea of NixOS. I really, really want it to work for me. But if I have too many more catastrophes, I may have to abandon this effort.
+
+If nothing else, I've gotten REALLY good at quickly and efficiently installing Arch. :-)
+
 ### Installation instructions
 
 Boot into the NixOS installation iso. Close the installer and open `console`, then run
