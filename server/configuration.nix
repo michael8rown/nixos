@@ -56,19 +56,35 @@ let
 	]);
 in
 {
+
+    fileSystems."/home" = {
+      device = "/mnt/storage/home";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+    fileSystems."/var/www" = {
+      device = "/mnt/storage/www";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+    fileSystems."/usr/local/bin" = {
+      device = "/mnt/storage/bin";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+    fileSystems."/var/lib/libvirt/images" = {
+      device = "/mnt/storage/images";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
 	nix = {
 		settings = {
 			experimental-features = [ "nix-command" "flakes" ];
-			#auto-optimise-store = true;
-			#^^^^^ this fails -- Loaded: bad-setting (Reason: Unit nix-optimise.timer has a bad unit file setting.)
-			#      Feb 17 15:15:52 nixos systemd[1]: nix-optimise.timer: Timer unit lacks value setting. Refusing.
-
 		};
-		#gc = {
-		#  automatic = true;
-		#  dates = "weekly";
-		#  options = "--delete-older-than 7d";
-		#};
 	};
 
 	security.sudo = {
@@ -89,35 +105,11 @@ in
 			#<agenix/modules/age.nix>
 		];
 
-
 	age.secrets.msmtp = {
 		file = ../secrets/msmtp.age;
 		owner = systemSettings.username;
 		group = "users";
 	};
-
-
-	#age = {
-	    # We're letting `agenix` know where the locations of the age files will be
-	    # in the server.
-	#  secrets = {
-	#    secret1 = {
-	#      file = "/home/"+systemSettings.username+"/.secrets/secret1.age";
-	#    };
-	#    msmtp = { 
-	#      file = "/home/"+systemSettings.username+"/.secrets/msmtp.age";
-	#      owner = systemSettings.username;
-	#      group = "users";
-	    #	group = config.users.groups.sendmail.name;
-	#      mode = "0440";
-	#    };
-	#  };
-	# Private key of the SSH key pair. This is the other pair of what was supplied
-	# in `secrets.nix`.
-	#
-	# This tells `agenix` where to look for the private key.
-	#  identityPaths = [ "/home/"+systemSettings.username+"/.ssh/id_ed25519" ];
-	#};
 
 	# Use the systemd-boot EFI boot loader.
 	boot.loader.systemd-boot.enable = true;
@@ -133,65 +125,21 @@ in
 	#  system.autoUpgrade.enable = true;
 	#  system.autoUpgrade.allowReboot = false;
 
-#	networking.hostName = systemSettings.hostname; # Define your hostname.
-	# networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-	# networking.interfaces.enp4s0.ipv4.addresses = [ { address = "10.11.12.122"; prefixLength = 24; } ];
-	# networking.defaultGateway = "10.11.12.1";
-	# networking.nameservers = [ "10.11.12.1" ];
-	# networking.nameservers = [ "208,67.222.222" "8.8.8.8" ];
-
-	# Configure network proxy if necessary
-	# networking.proxy.default = "http://user:password@proxy:port/";
-	# networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
 	# Enable networking
 	networking = {
 		networkmanager.enable = true;
 		hostName = systemSettings.hostname; # Define your hostname.
 #		networkmanager.enable = false;
 #		#interfaces.enp1s0.ipv4.addresses = [ { address = "10.0.0.122"; prefixLength = 24; } ];
-#		defaultGateway = "10.0.0.1";
-#		nameservers = [ "1.1.1.1" "8.8.8.8" ];
-#		useDHCP = false;
-#		bridges.br0.interfaces = [ "enp1s0" ];
-#		interfaces.br0.ipv4.addresses = [ { address = "10.0.0.140"; prefixLength = 24; } ];
+		defaultGateway = "10.0.0.1";
+		nameservers = [ "1.1.1.1" "8.8.8.8" ];
+		useDHCP = false;
+		bridges.br0.interfaces = [ "enp1s0" ];
+		interfaces.br0.ipv4.addresses = [ { address = "10.0.0.127"; prefixLength = 24; } ];
 	};
 
-#	virtualisation.libvirtd.enable = true;
-#	virtualisation.libvirtd.allowedBridges = [ "br0" ];
-
-  # From barrucadu:
-  # Set up a bridge network so that VMs can connect to the LAN
-  #
-  # `enp8s0` is the physical ethernet interface, but I am slaving that to the
-  # `br0` bridge - so it's the bridge's MAC address that gets presented to the
-  # physical network.
-  #
-  # To avoid having to reconfigure static IP assignments in my router if I
-  # switch between bridged and non-bridged networking, set up the MAC addresses
-  # such that:
-  #
-  # - `br0` has the MAC address of the physical ethernet card
-  # - `enp8s0` has a new random MAC address (https://serverfault.com/a/631119)
-  #
-  # So if I delete this block, the MAC address the router sees is unchanged, and
-  # so the static IP assignment is unaffected.
-#  networking.useDHCP = false;
-#  networking.interfaces.br0 = {
-#    useDHCP = true;
-#    macAddress = "a0:36:bc:bb:65:8d";
-#  };
-#  networking.interfaces.enp8s0 = {
-#    macAddress = "92:0b:e6:21:86:99";
-#    useDHCP = true;
-#  };
-#  networking.bridges.br0.interfaces = [ "enp8s0" ];
-
-#  virtualisation.libvirtd.enable = true;
-#  virtualisation.libvirtd.allowedBridges = [ "br0" ];
-
-
-
+	virtualisation.libvirtd.enable = true;
+	virtualisation.libvirtd.allowedBridges = [ "br0" ];
 
 	# Set your time zone.
 	time.timeZone = "America/Denver";
@@ -262,9 +210,11 @@ in
 		undetected-chromedriver
 		bat
 		mariadb
+		ffmpeg-full
 		apacheHttpd
 		msmtp
 		libvirt
+		qemu_full
 		parted
 		nvd
 		perlEnv
@@ -273,6 +223,7 @@ in
 		wireguard-tools
 		efibootmgr
 		pciutils
+		killall
 ];
 
 	programs = {
@@ -309,7 +260,12 @@ in
 #		firewalld = {
 #			enable = true;
 #		};
-#		ruterstop.enable = true;
+
+		logind.settings.Login = {
+			HandleLidSwitch = "ignore";
+			HandleLidSwitchExternalPower = "ignore";
+			HandleLidSwitchDocked = "ignore";
+		};
 
 		openssh = {
 			enable = true;
@@ -411,7 +367,7 @@ in
 	systemd.timers = {
 
 		"${systemSettings.hostname}Status" = {
-			enable = false;
+			enable = true;
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
 				OnCalendar = [
@@ -422,18 +378,8 @@ in
 			};
 		};
 
-#		"br0" = {
-#			enable = false;
-#			description = "Timer to bring up network br0 two minutes after boot and start debian12 vm";
-#			wantedBy = [ "multi-user.target" ];
-#			timerConfig = {
-#				OnBootSec = "1min";
-#				Unit = "br0.service";
-#			};
-#		};
-
 		"changedFiles" = {
-			enable = false;
+			enable = true;
 			description = "Timer to look for changes in directories";
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
@@ -464,7 +410,7 @@ in
 		};
 
 		"goToSleep" = {
-			enable = false;
+			enable = true;
 			description = "Put the system to sleep";
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
@@ -474,7 +420,7 @@ in
 		};
 
 		"hiTemp" = {
-			enable = false;
+			enable = true;
 			description = "Get previous days' high temp";
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
@@ -484,7 +430,7 @@ in
 		};
 
 		"lbBkup" = {
-			enable = false;
+			enable = true;
 			description = "Check for libro updates";
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
@@ -494,7 +440,7 @@ in
 		};
 
 		"vmCtrl" = {
-			enable = false;
+			enable = true;
 			description = "Timer to suspend resume debian12";
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
@@ -507,7 +453,7 @@ in
 		};
 
 		"wc" = {
-			enable = false;
+			enable = true;
 			description = "Check for new word counts";
 			wantedBy = [ "timers.target" ];
 			timerConfig = {
@@ -545,16 +491,6 @@ in
 			};
 		};
 
-#		"br0" = {
-#			description = "Bring up network br0 1 minute after boot and start debian12 vm";
-#			requires = [ "network.target" ];
-#			wantedBy = [ "multi-user.target" ];
-#			serviceConfig = {
-#				Type = "oneshot";
-#				ExecStart = "/usr/local/bin/br0.sh";
-#			};
-#		};
-
 		"changedFiles" = {
 			description = "Look for changes in directories";
 			serviceConfig = {
@@ -564,16 +500,6 @@ in
 				ExecStart = "/home/${systemSettings.username}/change.sh";
 			};
 		};
-
-		#"ckJobs" = {
-		#	description = "Check for new jobs";
-		#	serviceConfig = {
-		#		Type = "oneshot";
-		#		User = systemSettings.username;
-		#		Group = "users";
-		#		ExecStart = "/home/${systemSettings.username}/jobs/jobs.sh";
-		#	};
-		#};
 
 		"ckUpd" = {
 			description = "Check for available updates";
