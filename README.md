@@ -5,7 +5,7 @@ Configurations and miscellaneous files for my home server and my laptops.
 > [!CAUTION]
 > These steps are not used exactly this way anymore. Each different profile will get its own installation instructions. The only profile-specific instructions written so far are those for the [`server`](https://github.com/michael8rown/nixos/tree/main/server) profile.
 
-### Note March 14, 2026
+### Update March 14, 2026
 
 I've tried several times to install the NixOS server configuration on bare metal and have failed miserably each time. Whether it's networking or webserver cgi, something always seems to go wrong. So I always end up back on Arch with this server config installed in a VM.
 
@@ -13,7 +13,7 @@ Over the past two weeks, I've tinkered with it pretty much non-stop. Thanks to t
 
 What I've learned over these last couple of weeks is this: NixOS seems best-suited to IT professionals. ~~It is definitely not great for beginners just wanting a normal Linux experience~~ <sup>[see note]</sup>, and it's not even really good for Linux hobbyists like me. I really love to write new scripts in Perl or Python, or drum up a whole new webapp to manage some task or other in my daily life. NixOS does not seem to be well-suited for that kind of behavior.
 
-<sup>Note:</sup> I believe I am mistaken about this: in fact, NixOS might be the *perfect* OS for a Linux beginner who just wants an OS that stays out of their way and works. In that regard, NixOS is quite possibly the best Linux OS out there.
+Note: I believe I am mistaken about this: in fact, NixOS might be the *perfect* OS for a Linux beginner who just wants an OS that stays out of their way and works. In that regard, NixOS is quite possibly the best Linux OS out there.
 
 That being said, I admit I feel a huge amount of pride at having figured out two of my biggest issues. If I can get the networking issue settled, I might actually use NixOS on my home server. I really, really love the idea of NixOS. I really, really want it to work for me. But if I have too many more catastrophes, I may have to abandon this effort.
 
