@@ -224,7 +224,7 @@ in
 		efibootmgr
 		pciutils
 		killall
-];
+	];
 
 	programs = {
 		nano = {
@@ -356,8 +356,6 @@ in
 		};
 
 	}; # end of services
-
-# ================================================================================
 
 	systemd.targets.sleep.enable = false;
 	systemd.targets.suspend.enable = false;
