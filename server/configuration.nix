@@ -278,24 +278,24 @@ in
 		wget
 		git
 		fastfetch
-		php
+#		php
 		python312
 #		firewalld
 		bc
 		chromedriver
 		undetected-chromedriver
 		bat
-		mariadb
+#		mariadb
 		ffmpeg-full
-		apacheHttpd
-		msmtp
-		libvirt
+#		apacheHttpd
+#		msmtp
+#		libvirt
 		qemu_full
 		parted
 		nvd
 		perlEnv
 		jq
-		samba
+#		samba
 		wireguard-tools
 		efibootmgr
 		pciutils
