@@ -5,6 +5,10 @@ Configurations and miscellaneous files for my home server and my laptops.
 > [!CAUTION]
 > These steps are not used exactly this way anymore. Each different profile will get its own installation instructions. The only profile-specific instructions written so far are those for the [`server`](https://github.com/michael8rown/nixos/tree/main/server) profile.
 
+### Update March 21, 2026
+
+I have finally succeeded in getting a stable installation of NixOS running on bare metal. Thanks to the example of [barracadu's nyarlathotep configuration.nix](https://github.com/barrucadu/nixfiles/blob/master/hosts/nyarlathotep/configuration.nix#L465), my python script runs regularly as a systemd service. And while [stigok's article on custom perl packages](https://blog.stigok.com/2020/04/16/building-a-custom-perl-package-for-nixos.html) got me on the path to solving my httpd/perl problem, what eventually solved it was so much simpler and rudimentary: `enablePerl = true;` in configuration.nix was all it took. So I have NixOS running on my home server now and will likely continue with that for the foreseeable future. I suppose the next big test will be when 26.05 comes out. Hopefully it'll be as easy as the upgrade from 25.06 -> 25.11 was.
+
 ### Update March 14, 2026
 
 I've tried several times to install the NixOS server configuration on bare metal and have failed miserably each time. Whether it's networking or webserver cgi, something always seems to go wrong. So I always end up back on Arch with this server config installed in a VM.
