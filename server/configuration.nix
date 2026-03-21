@@ -3,7 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, lib, inputs, systemSettings, ... }:
-with lib; # added 3/13/2026
+with lib; # added 3/13/2026, needed for python in systemd.services
 let
 	perlEnv = pkgs.perl.withPackages (p: with p; [
 		ModuleCPANfile
@@ -108,7 +108,7 @@ in
 		[ # Include the results of the hardware scan.
 			../hardware-configuration.nix
 			./bashrc.nix
-			./httpd-override.nix
+			#./httpd-override.nix # this was a great step, but 'enablePerl' fixed everything
 			#../python/jobs.nix # <--
 			#<home-manager/nixos>
 			#<agenix/modules/age.nix>
@@ -214,9 +214,6 @@ in
 #  virtualisation.libvirtd.enable = true;
 #  virtualisation.libvirtd.allowedBridges = [ "br0" ];
 
-
-
-
 	# Set your time zone.
 	time.timeZone = "America/Denver";
 
@@ -278,24 +275,18 @@ in
 		wget
 		git
 		fastfetch
-#		php
 		python312
 #		firewalld
 		bc
 		chromedriver
 		undetected-chromedriver
 		bat
-#		mariadb
 		ffmpeg-full
-#		apacheHttpd
-#		msmtp
-#		libvirt
 		qemu_full
 		parted
 		nvd
 		perlEnv
 		jq
-#		samba
 		wireguard-tools
 		efibootmgr
 		pciutils
@@ -352,6 +343,7 @@ in
 		httpd = {
 			enable = true;
 			adminAddr = "admin@localhost";
+			enablePerl = true; # this is what I was missing all along
 			enablePHP = true;
 
 			phpOptions = ''
@@ -434,8 +426,6 @@ in
 
 	}; # end of services
 
-# ================================================================================
-
 	systemd.targets.sleep.enable = false;
 	systemd.targets.suspend.enable = false;
 	systemd.targets.hibernate.enable = false;
@@ -454,16 +444,6 @@ in
 				Unit = "${systemSettings.hostname}Status.service";
 			};
 		};
-
-#		"br0" = {
-#			enable = false;
-#			description = "Timer to bring up network br0 two minutes after boot and start debian12 vm";
-#			wantedBy = [ "multi-user.target" ];
-#			timerConfig = {
-#				OnBootSec = "1min";
-#				Unit = "br0.service";
-#			};
-#		};
 
 		"changedFiles" = {
 			enable = true;
@@ -578,16 +558,6 @@ in
 			};
 		};
 
-#		"br0" = {
-#			description = "Bring up network br0 1 minute after boot and start debian12 vm";
-#			requires = [ "network.target" ];
-#			wantedBy = [ "multi-user.target" ];
-#			serviceConfig = {
-#				Type = "oneshot";
-#				ExecStart = "/usr/local/bin/br0.sh";
-#			};
-#		};
-
 		"changedFiles" = {
 			description = "Look for changes in directories";
 			serviceConfig = {
@@ -597,16 +567,6 @@ in
 				ExecStart = "/home/${systemSettings.username}/change.sh";
 			};
 		};
-
-		#"ckJobs" = {
-		#	description = "Check for new jobs";
-		#	serviceConfig = {
-		#		Type = "oneshot";
-		#		User = systemSettings.username;
-		#		Group = "users";
-		#		ExecStart = "/home/${systemSettings.username}/jobs/jobs.sh";
-		#	};
-		#};
 
 		"ckUpd" = {
 			description = "Check for available updates";
