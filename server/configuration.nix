@@ -108,10 +108,6 @@ in
 		[ # Include the results of the hardware scan.
 			../hardware-configuration.nix
 			./bashrc.nix
-			#./httpd-override.nix # this was a great step, but 'enablePerl' fixed everything
-			#../python/jobs.nix # <--
-			#<home-manager/nixos>
-			#<agenix/modules/age.nix>
 		];
 
 
@@ -120,28 +116,6 @@ in
 		owner = systemSettings.username;
 		group = "users";
 	};
-
-	#age = {
-	    # We're letting `agenix` know where the locations of the age files will be
-	    # in the server.
-	#  secrets = {
-	#    secret1 = {
-	#      file = "/home/"+systemSettings.username+"/.secrets/secret1.age";
-	#    };
-	#    msmtp = { 
-	#      file = "/home/"+systemSettings.username+"/.secrets/msmtp.age";
-	#      owner = systemSettings.username;
-	#      group = "users";
-	    #	group = config.users.groups.sendmail.name;
-	#      mode = "0440";
-	#    };
-	#  };
-	# Private key of the SSH key pair. This is the other pair of what was supplied
-	# in `secrets.nix`.
-	#
-	# This tells `agenix` where to look for the private key.
-	#  identityPaths = [ "/home/"+systemSettings.username+"/.ssh/id_ed25519" ];
-	#};
 
 	# Use the systemd-boot EFI boot loader.
 	boot.loader.systemd-boot.enable = true;
@@ -183,36 +157,6 @@ in
 
 	virtualisation.libvirtd.enable = true;
 	virtualisation.libvirtd.allowedBridges = [ "br0" ];
-
-  # From barrucadu:
-  # Set up a bridge network so that VMs can connect to the LAN
-  #
-  # `enp8s0` is the physical ethernet interface, but I am slaving that to the
-  # `br0` bridge - so it's the bridge's MAC address that gets presented to the
-  # physical network.
-  #
-  # To avoid having to reconfigure static IP assignments in my router if I
-  # switch between bridged and non-bridged networking, set up the MAC addresses
-  # such that:
-  #
-  # - `br0` has the MAC address of the physical ethernet card
-  # - `enp8s0` has a new random MAC address (https://serverfault.com/a/631119)
-  #
-  # So if I delete this block, the MAC address the router sees is unchanged, and
-  # so the static IP assignment is unaffected.
-#  networking.useDHCP = false;
-#  networking.interfaces.br0 = {
-#    useDHCP = true;
-#    macAddress = "a0:36:bc:bb:65:8d";
-#  };
-#  networking.interfaces.enp8s0 = {
-#    macAddress = "92:0b:e6:21:86:99";
-#    useDHCP = true;
-#  };
-#  networking.bridges.br0.interfaces = [ "enp8s0" ];
-
-#  virtualisation.libvirtd.enable = true;
-#  virtualisation.libvirtd.allowedBridges = [ "br0" ];
 
 	# Set your time zone.
 	time.timeZone = "America/Denver";
